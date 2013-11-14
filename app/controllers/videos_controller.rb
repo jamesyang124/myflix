@@ -12,15 +12,21 @@ class VideosController < ApplicationController
 
   def search
     @videos = Video.search_by_title(params[:search])
-    @categories = []
-    @videos.each do |v|
-      if v.category
-        @categories << v.category if !@categories.include?(v.category)
-      else
+    @categories = category_by_video_title(@videos)
+    render 'search'
+  end
 
-        @categories << 'Uncategoried' if !@categories.include?('Uncategoried')
+  private
+
+  def category_by_video_title(videos)
+    video_categories = []
+    videos.each do |v|
+      if v.category
+        video_categories << v.category if !video_categories.include?(v.category)
+      else
+        video_categories << 'Uncategoried' if !video_categories.include?('Uncategoried')
       end
     end
-    render 'search'
+    video_categories
   end
 end
