@@ -7,6 +7,7 @@ class Category < ActiveRecord::Base
     @videos = self.videos
     @videos.sort! do |x,y| 
       y.updated_at.to_i <=> x.updated_at.to_i
-    end 
+    end
+    @videos.take(6)
   end
 end
