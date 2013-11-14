@@ -1,0 +1,21 @@
+- @categories.each do |c|
+  - if c == "Uncategoried"
+    %article.video_category
+      %header
+        %h3= link_to "Uncategoried"
+      .videos.row
+        - @videos.each do |v|
+          - if v.category == nil
+            .video.span2
+              = link_to "", nil do
+                %img(src="#{v.small_cover_url}")
+  - else
+    %article.video_category
+      %header
+        %h3= link_to "#{c.name}"
+      .videos.row
+        - @videos.each do |v|
+          - if v.category == c
+            .video.span2
+              = link_to "", nil do
+                %img(src="#{v.small_cover_url}")
