@@ -1,3 +1,4 @@
+# Modulize Video seeds data
 module VideoSeeds
   def self.category_creation
     comedies = Category.create(name: 'Comedies')
