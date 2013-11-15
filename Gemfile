@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.0.0'
 gem 'haml-rails'
-gem 'bootstrap-sass'
+gem 'bootstrap-sass', '~> 2.2.1.0'
 gem 'bcrypt-ruby', '3.0.1'
 
 
