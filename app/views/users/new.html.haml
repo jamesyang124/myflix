@@ -1,3 +1,32 @@
 %section.register.container
   .row
     .span10.offset1
+      %form.form-horizontal
+        %header
+          %h1 Register
+        =simple_form_for @user do |f| 
+          %fieldset
+            .control-group
+              %label.control-label(for="user_email") Email Address
+              .controls
+                .input-prepend
+                  %span.add-on
+                    %i.icon-envelope
+                  =f.input_field :email, class: "span3", placeholder: "ex: email@example.com"
+            .control-group
+              %label.control-label(for="user_password") Password
+              .controls
+                .input-prepend
+                  %span.add-on 
+                    %i.icon-certificate
+                  =f.input_field :password, class: "span3", placeholder: "do not less than 8 characters."
+            .control-group
+              %label.control-label(for="full_name") Full Name
+              .controls
+                .input-prepend
+                  %span.add-on 
+                    %i.icon-user
+                  =f.input_field :full_name, class: "span3", placeholder: "ex: David Bowie"
+          %fieldset.actions.control-group
+            .controls
+              =f.submit 'Sign Up', class: "btn btn-success"

@@ -4,7 +4,7 @@ gem 'rails', '4.0.0'
 gem 'haml-rails'
 gem 'bootstrap-sass', '~> 2.2.1.0'
 gem 'bcrypt-ruby', '3.0.1'
-
+gem 'simple_form'
 
 group :assets do
   gem 'sass-rails',   '~> 4.0.0'
@@ -19,10 +19,10 @@ group :development, :test do
   gem 'rspec-rails', '~> 2.14.0'
 end
 
-group :test do 
+group :test do
   gem 'shoulda-matchers', '~> 2.4.0'
   gem 'factory_girl_rails', '~> 4.3.0'
-  gem "faker", "~> 1.1.2" 
+  gem "faker", "~> 1.1.2"
 end
 
 group :production do
