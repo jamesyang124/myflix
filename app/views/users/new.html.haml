@@ -4,6 +4,7 @@
       =simple_form_for @user, html: {class: "form-horizontal"} do |f|
         %header
           %h1 Register
+          = render 'errors', object: @user
           %fieldset
             - group = @user.errors.include?(:email) ? "control-group error" : "control-group"
             %div(class=group)
