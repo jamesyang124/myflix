@@ -16,6 +16,10 @@ class VideosController < ApplicationController
     render 'search'
   end
 
+  def front 
+    
+  end
+
   private
 
   def category_by_video_title(videos)
