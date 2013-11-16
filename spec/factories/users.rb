@@ -20,6 +20,12 @@ FactoryGirl.define do
     factory :invalid_password do 
       password nil
     end
-    
+
+    factory :registered_user do 
+      email 'bobo@example.com'
+      full_name 'Bobo Stenson'
+      password 'secretistoolong'
+      password_confirmation 'secretistoolong'
+    end
   end
 end
