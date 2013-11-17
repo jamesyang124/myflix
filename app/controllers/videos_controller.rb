@@ -1,5 +1,6 @@
 class VideosController < ApplicationController 
-  
+  before_action :require_user, except: [:front]
+
   def index 
     @videos = Video.all
     @categories = Category.all
@@ -17,7 +18,11 @@ class VideosController < ApplicationController
   end
 
   def front 
-    
+    if logged_in?
+      redirect_to home_path
+    else
+      render :front
+    end 
   end
 
   private

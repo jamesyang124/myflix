@@ -1,10 +1,9 @@
 %section.register.container
   .row
     .span10.offset1
-      =form_tag '/login', class: "form-horizontal"  do
+      =form_tag '/sign_in', class: "form-horizontal"  do
         %header
-          %h1 Login
-          /= render 'users/errors', object: @user
+          %h1 Sign In
           %fieldset
             - group = "control-group"
             %div(class=group)
