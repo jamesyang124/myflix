@@ -16,7 +16,7 @@ describe SessionsController do
 
     it 'redirect to videos#home if authenticate successed' do 
       post :create, email: @user.email, password: @user.password
-      expect(response).to redirect_to home_path
+      expect(response).to redirect_to root_path
     end
 
     it 'render to /sessions/edit if password wrong' do 
