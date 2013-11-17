@@ -40,7 +40,12 @@ describe UsersController do
     it 'Save failed when password is less than 9 characters' do
       expect{
         post :create,
-          user: attributes_for(:user, password: '12345678')  
+          user: attributes_for(:user, password: "12345678")  
+      }.to_not change(User, :count) 
+
+      expect{
+        post :create,
+          user: attributes_for(:user, password: nil)  
       }.to_not change(User, :count) 
     end
 
