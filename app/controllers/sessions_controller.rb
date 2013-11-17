@@ -10,6 +10,7 @@ class SessionsController < ApplicationController
     if user and user.authenticate(params[:password])
       login_user!(user)
     else
+      flash.now[:info] = "Sing in failed, please check the sign-in information or register a new one."
       render :edit
     end
   end

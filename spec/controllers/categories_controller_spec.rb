@@ -3,7 +3,7 @@ require 'spec_helper'
 describe CategoriesController do 
   context 'have signed in' do 
     before :each do 
-      session[:user_id] = User.first.id
+      session[:user_id] = create(:user)
       @category = create(:category)
     end
 

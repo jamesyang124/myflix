@@ -4,7 +4,7 @@ describe VideosController do
   context 'have singed in' do
     before :each do 
       @video = create(:video)
-      session[:user_id] = User.first.id
+      session[:user_id] = create(:user)
     end 
     it 'GET videos#index' do 
       get :index
