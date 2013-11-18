@@ -60,9 +60,23 @@ describe Video do
     expect(Video.search_by_title('Lo!n')).to be_empty
   end
 
+  it 'should return partial matched array when search with exact string' do 
+    inception = Video.find_by(title: "Inception")
+    lincoln = Video.find_by(title: "Lincoln")
+    expect(Video.search_by_title('Inception')).to include(inception)
+    expect(Video.search_by_title('Lincoln')).to include(lincoln)
+  end
+
   it 'should return matched array when search with case insensetive string' do 
     crime_scene = Category.create(name: 'Crime Scene')
     Video.create(title: 'video1', description: 'desc1', category: crime_scene)
     expect(Video.search_by_title('I')).to match_array(Video.search_by_title('i'))
+  end
+
+  it 'should return matched array with order' do 
+    crime_scene = Category.create(name: 'Crime Scene')
+    v1 = Video.create(title: 'video1', description: 'desc1', category: crime_scene, created_at: 1.day.ago)
+    v2 = Video.create(title: 'video2', description: 'desc2', category: crime_scene)
+    expect(Video.search_by_title('video')).to eq([v2,v1])
   end
 end

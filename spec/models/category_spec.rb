@@ -16,7 +16,7 @@ describe Category do
   
     it 'has many videos' do
       expect(@crime_scene.videos).to include(@test_video1, @test_video2)  
-      expect(@crime_scene.videos).to eq([@test_video1, @test_video2]) 
+      expect(@crime_scene.videos.count).to eq(2) 
       should have_many(:videos) 
     end 
   
@@ -37,8 +37,15 @@ describe Category do
     end 
 
     it 'return at most 6 recent-created videos' do
-      5.times { |_| create(:video, category: @category) }
+      6.times { |_| create(:video, category: @category) }
+      last_video = create(:video, category: @category, updated_at: 1.day.ago)
       expect(@category.reload.recent_videos).to have_at_most(6).elements
+      expect(@category.reload.recent_videos).not_to include(last_video)
     end
+
+    it 'return empty array when categry has no videos' do
+      category = create(:category)
+      expect(category.reload.recent_videos).to eq([])
+    end 
   end
 end

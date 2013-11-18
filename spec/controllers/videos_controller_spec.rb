@@ -19,15 +19,11 @@ describe VideosController do
       expect(response).to render_template :video_show
     end
 
-    it 'GET videos#search' do 
-      get :search
+    it 'POST videos#search' do 
+      post :search
       expect(response).to render_template :search
     end
 
-    it 'GET videos#front' do 
-      get :front
-       expect(response).to redirect_to home_path
-    end
   end
 
   context 'have not singed in' do 
@@ -46,14 +42,10 @@ describe VideosController do
       expect(response).to redirect_to :sign_in
     end
 
-    it 'GET videos#search' do 
-      get :search
+    it 'POST videos#search' do 
+      post :search
       expect(response).to redirect_to :sign_in
     end
 
-    it 'GET videos#front' do 
-      get :front
-       expect(response).to render_template :front
-    end
   end
 end

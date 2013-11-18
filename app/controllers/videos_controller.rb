@@ -17,14 +17,6 @@ class VideosController < ApplicationController
     render 'search'
   end
 
-  def front 
-    if logged_in?
-      redirect_to home_path
-    else
-      render :front
-    end 
-  end
-
   private
 
   def category_by_video_title(videos)

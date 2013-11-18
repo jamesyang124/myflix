@@ -7,7 +7,7 @@ class Video < ActiveRecord::Base
       []
     else
       # Postgre SQL syntax
-      self.where(["LOWER(title) LIKE LOWER(?)", "%#{str}%"])
+      self.where(["LOWER(title) LIKE LOWER(?)", "%#{str}%"]).order("created_at DESC")
     end
   end
 end
