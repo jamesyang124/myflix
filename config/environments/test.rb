@@ -11,8 +11,13 @@ Myflix::Application.configure do
   config.serve_static_assets = true
   config.static_cache_control = "public, max-age=3600"
 
+  # Do not eager load code on boot. This avoids loading your whole application
+  # just for the purpose of running a single test. If you are using a tool that
+  # preloads Rails for running tests, you may have to set it to true.
+  config.eager_load = false
+
   # Log error messages when you accidentally call methods on nil
-  config.whiny_nils = true
+  # config.whiny_nils = true
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
@@ -30,7 +35,7 @@ Myflix::Application.configure do
   config.action_mailer.delivery_method = :test
 
   # Raise exception on mass assignment protection for Active Record models
-  config.active_record.mass_assignment_sanitizer = :strict
+  #config.active_record.mass_assignment_sanitizer = :strict
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr

@@ -10,6 +10,7 @@ describe Video do
     # (Video.find video).should == video
     # (Video.find video).should eq(video)
   end
+
   it 'belongs to category' do
     crime_scene = Category.create(name: 'Crime Scene')
     test_video1 = Video.create(title: 'video1', description: 'desc1', category: crime_scene)
@@ -17,6 +18,7 @@ describe Video do
 
     should belong_to(:category)
   end
+
   it 'does not save video without title' do
     current_count = Video.count  
     video = Video.create(description: 'miss title')
@@ -40,7 +42,41 @@ describe Video do
     # end
     should validate_presence_of(:title)
   end
+
   it 'is valid with description' do
     should validate_presence_of(:description)
+  end
+
+  it 'should return empty array when search by whitespace, or empty string' do 
+    expect(Video.search_by_title('')).to be_empty
+    expect(Video.search_by_title(' ')).to be_empty
+  end
+
+  it "should return empty array when search with special query character '_' , '!', or '%'" do 
+    expect(Video.search_by_title('%')).to be_empty
+    expect(Video.search_by_title('_')).to be_empty
+    expect(Video.search_by_title('Inc_ption')).to be_empty
+    expect(Video.search_by_title('%ortion')).to be_empty
+    expect(Video.search_by_title('Lo!n')).to be_empty
+  end
+
+  it 'should return partial matched array when search with exact string' do 
+    inception = Video.find_by(title: "Inception")
+    lincoln = Video.find_by(title: "Lincoln")
+    expect(Video.search_by_title('Inception')).to include(inception)
+    expect(Video.search_by_title('Lincoln')).to include(lincoln)
+  end
+
+  it 'should return matched array when search with case insensetive string' do 
+    crime_scene = Category.create(name: 'Crime Scene')
+    Video.create(title: 'video1', description: 'desc1', category: crime_scene)
+    expect(Video.search_by_title('I')).to match_array(Video.search_by_title('i'))
+  end
+
+  it 'should return matched array with order' do 
+    crime_scene = Category.create(name: 'Crime Scene')
+    v1 = Video.create(title: 'video1', description: 'desc1', category: crime_scene, created_at: 1.day.ago)
+    v2 = Video.create(title: 'video2', description: 'desc2', category: crime_scene)
+    expect(Video.search_by_title('video')).to eq([v2,v1])
   end
 end
