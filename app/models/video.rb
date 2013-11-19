@@ -11,7 +11,8 @@ class Video < ActiveRecord::Base
     end
   end
 
-  def self.search_by_title_categorized(videos)
+  def self.search_by_title_categorized(search_term)
+    videos = search_by_title(search_term)
     videos.reduce({}) do |collection, video|
       collection[video.category] ||= []
       collection[video.category] = (collection[video.category] << video) if collection[video.category].size < 6
