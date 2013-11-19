@@ -12,8 +12,12 @@ class VideosController < ApplicationController
   end
 
   def search
-    @videos = Video.search_by_title(params[:search])
-    @categories = category_by_video_title(@videos)
+    videos = Video.search_by_title(params[:search])
+    categories = category_by_video_title(videos)
+    @items = {}
+    categories.each do |c|
+      @items[c] = Video.search_by_title_categorized(videos, c)
+    end
     render 'search'
   end
 

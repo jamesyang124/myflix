@@ -10,4 +10,10 @@ class Video < ActiveRecord::Base
       self.where(["LOWER(title) LIKE LOWER(?)", "%#{str}%"]).order("created_at DESC")
     end
   end
+
+  def self.search_by_title_categorized(videos, category)
+    videos.select do |v| 
+      v.category == category
+    end.first(6)
+  end
 end

@@ -1,5 +1,5 @@
-- @categories.each do |c|
+- @items.each do |c, v|
   - if c == "Uncategoried"
-    = render 'search_list', items: videos_by_category(c), link_name: "Uncategoried"
+    = render 'search_list', items: v, link_name: "Uncategoried"
   - else
-    = render 'search_list', items: videos_by_category(c), link_name: "#{c.name}"
+    = render 'search_list', items: v, link_name: "#{c.name}"
