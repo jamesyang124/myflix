@@ -2,7 +2,7 @@
   %header
     %h3= link_to link_name
   .videos.row
-  - items.each do |v|
-    .video.span2
-      = link_to "", nil do
-        %img(src="#{v.small_cover_url}")
+    - videos.each do |v|
+      .video.span2
+        = link_to "", nil do
+          %img(src="#{v.small_cover_url}")
