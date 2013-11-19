@@ -12,10 +12,10 @@ class Video < ActiveRecord::Base
   end
 
   def self.search_by_title_categorized(videos)
-    videos.reduce({}) do |list, video|
-      list[video.category] ||= []
-      list[video.category] = (list[video.category] << video) if list[video.category].size < 6
-      list
+    videos.reduce({}) do |collection, video|
+      collection[video.category] ||= []
+      collection[video.category] = (collection[video.category] << video) if collection[video.category].size < 6
+      collection
     end
   end
 end
