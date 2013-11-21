@@ -20,12 +20,12 @@ describe SessionsController do
     end
 
     it 'render to /sessions/edit if password wrong' do 
-      post :create, email: @user.email, password: '123456789'
+      post :create, email: @user.email, password: @user.password << "--"
       expect(response).to render_template :edit
     end
 
     it 'render to sessions/edit if email wrong' do 
-      post :create, email: 'wrong@example.com', password: @user.password
+      post :create, email: @user.email << "--", password: @user.password
       expect(response).to render_template :edit
     end
   end

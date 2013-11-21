@@ -3,8 +3,6 @@ require 'spec_helper'
 describe UsersController do 
   context 'GET User#new' do 
     it 'has new User model object' do 
-      fake_user = create(:user)
-
       get :new
       expect(assigns(:user)).to be_a_new(User)
     end
@@ -21,13 +19,15 @@ describe UsersController do
         post :create,
           user: attributes_for(:invalid_name)  
       }.to_not change(User, :count) 
+      expect(response).to render_template :new
     end
 
     it 'Save failed when email is nil' do
       expect{
         post :create,
           user: attributes_for(:invalid_email)  
-      }.to_not change(User, :count) 
+      }.to_not change(User, :count)
+      expect(response).to render_template :new 
     end
 
     it 'Save failed when password is nil' do
@@ -35,6 +35,7 @@ describe UsersController do
         post :create,
           user: attributes_for(:invalid_password)  
       }.to_not change(User, :count) 
+      expect(response).to render_template :new
     end
 
     it 'Save failed when password is less than 9 characters' do
@@ -42,11 +43,13 @@ describe UsersController do
         post :create,
           user: attributes_for(:user, password: "12345678")  
       }.to_not change(User, :count) 
+      expect(response).to render_template :new
 
       expect{
         post :create,
           user: attributes_for(:user, password: nil)  
       }.to_not change(User, :count) 
+      expect(response).to render_template :new
     end
 
     it 'Save succesfull when all valid data' do
@@ -54,6 +57,7 @@ describe UsersController do
         post :create,
           user: attributes_for(:user)  
       }.to change(User, :count).by(1) 
+      expect(response).to redirect_to root_path
     end
   end
 end
