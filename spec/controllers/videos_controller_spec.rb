@@ -20,7 +20,9 @@ describe VideosController do
     end
 
     it 'POST videos#search' do 
-      post :search
+      search_term =  "Inception"
+      post :search, search: search_term
+      expect(assigns(:items)).to eq(Video.search_by_title_categorized(search_term))
       expect(response).to render_template :search
     end
 
