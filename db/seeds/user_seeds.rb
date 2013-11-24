@@ -2,7 +2,7 @@ require 'faker'
 
 module UserSeeds
   def self.create_user
-    2.times do 
+    6.times do 
       User.create(users_data)
     end
   end

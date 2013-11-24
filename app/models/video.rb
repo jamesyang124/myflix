@@ -28,6 +28,10 @@ class Video < ActiveRecord::Base
                   sum += c.rating
                  end
     total_rate /= comments.count
-    total_rate.round(2)
+    total_rate.round(1)
+  end
+
+  def comments_order_by_created_date
+    comments.order("created_at DESC")   
   end
 end
