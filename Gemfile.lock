@@ -55,7 +55,7 @@ GEM
     factory_girl_rails (4.3.0)
       factory_girl (~> 4.3.0)
       railties (>= 3.0.0)
-    faker (1.1.2)
+    faker (1.2.0)
       i18n (~> 0.5)
     haml (4.0.4)
       tilt
@@ -162,7 +162,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   fabrication
   factory_girl_rails (~> 4.3.0)
-  faker (~> 1.1.2)
+  faker (~> 1.2.0)
   haml-rails
   jquery-rails
   meta_request

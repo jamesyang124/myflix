@@ -1,6 +1,8 @@
 class Video < ActiveRecord::Base 
+  has_many :comments
   belongs_to :category
   validates_presence_of :title, :description
+
 
   def self.search_by_title(str)
     if str.blank? || str.match(/[%|_|!]/)
