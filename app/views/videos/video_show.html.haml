@@ -7,7 +7,7 @@
         %header
           %h3 #{@video.title}
           %span 
-            = "Rating: #{@video.comments_total_rate} / 5.0"
+            = "Rating: #{@video.reviews_total_rate} / 5.0"
         %p #{@video.description}
         .actions
           %a.btn.btn-primary(href="") Watch Now
@@ -32,20 +32,20 @@
           %a(href="") Cancel
       %header
         %h3 
-          = "User Reviews (#{@video.comments.size})"
+          = "User Reviews (#{@video.reviews.size})"
       %ul
-        - @video.comments_order_by_created_date.each do |c|
+        - @videos.reviews_order_by_created_date.each do |r|
           %article.review
             %li.row
               .span2
                 %span 
-                  = "Rating: #{c.rating} / 5"
+                  = "Rating: #{r.rating} / 5"
                 %p 
                   by 
                   %a(href="") 
-                    = "#{c.user.full_name}"
+                    = "#{r.user.full_name}"
                   %br
-                  = "at #{c.created_at.strftime("%m/%d/%Y %H:%M:%S")}"
+                  = "at #{r.created_at.strftime("%m/%d/%Y %H:%M:%S")}"
               .span8
                 %p 
-                  = c.opinion
+                  = r.content

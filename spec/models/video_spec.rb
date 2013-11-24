@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Video do
   it { should belong_to(:category) }
-  it { should have_many(:comments) }
+  it { should have_many(:reviews) }
   it { should validate_presence_of(:title) }
   it { should validate_presence_of(:description) }
 
@@ -86,12 +86,12 @@ describe Video do
   end
 
   context 'has many commments' do 
-    let(:comments) { 6.times { create(:comment) } }
+    let(:reviews) { 6.times { create(:review) } }
 
     it 'get average rating' do 
-      comments
+      reviews
       video = Video.first
-      expect(video.comments_total_rate).to eq(video.comments_total_rate) 
+      expect(video.reviews_total_rate).to eq(video.reviews_total_rate) 
     end
   end
 end

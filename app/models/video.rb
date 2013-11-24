@@ -1,5 +1,5 @@
 class Video < ActiveRecord::Base 
-  has_many :comments
+  has_many :reviews
   belongs_to :category
   validates_presence_of :title, :description
 
@@ -22,16 +22,16 @@ class Video < ActiveRecord::Base
     result.data
   end
 
-  def comments_total_rate
+  def reviews_total_rate
     total_rate = 0.00
-    total_rate = comments.reduce(total_rate) do |sum, c| 
+    total_rate = reviews.reduce(total_rate) do |sum, c| 
                   sum += c.rating
                  end
-    total_rate /= comments.count
+    total_rate /= reviews.count
     total_rate.round(1)
   end
 
-  def comments_order_by_created_date
-    comments.order("created_at DESC")   
+  def reviews_order_by_created_date
+    reviews.order("created_at ASC")   
   end
 end

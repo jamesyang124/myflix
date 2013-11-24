@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base 
-  has_many :comments
+  has_many :reviews
 
   has_secure_password validations: false
   

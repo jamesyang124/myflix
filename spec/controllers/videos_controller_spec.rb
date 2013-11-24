@@ -31,6 +31,13 @@ describe VideosController do
         expect(assigns(:video)).to eq(Video.find(@video)) 
       end
 
+      it 'sets reviews' do
+        5.times { @video.reviews << create(:review) }
+
+        get :show, id: @video
+        expect(assigns(:video).reviews).to match_array @video.reviews
+      end
+
       it 'render_template videos/show' do
         get :show, id: @video
         response_expect.to render_template :video_show
