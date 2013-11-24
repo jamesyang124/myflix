@@ -21,4 +21,13 @@ class Video < ActiveRecord::Base
             end
     result.data
   end
+
+  def comments_total_rate
+    total_rate = 0.00
+    total_rate = comments.reduce(total_rate) do |sum, c| 
+                  sum += c.rating
+                 end
+    total_rate /= comments.count
+    total_rate.round(2)
+  end
 end

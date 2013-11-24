@@ -36,8 +36,11 @@ module CommentSeeds
     users = User.all
     Video.all.each do |v| 
       if v.comments.blank?
-        (Random.rand()*10).to_i.times do 
-          Comment.create(opinion: Faker::Lorem.paragraph(Random.rand()*8), rating: (Random.rand()*5).round(2), video: v, user: users.sample)
+        (Random.rand()*2 + 1).to_i.times do 
+          Comment.create( opinion: Faker::Lorem.paragraph((Random.rand*8).to_i + 1), 
+                          rating: (Random.rand*4 + 1).round(2), 
+                          video: v, 
+                          user: users.sample )
         end
       end
     end

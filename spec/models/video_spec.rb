@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Video do
   it { should belong_to(:category) }
+  it { should have_many(:comments) }
   it { should validate_presence_of(:title) }
   it { should validate_presence_of(:description) }
 
@@ -82,5 +83,15 @@ describe Video do
     v1 = Video.create(title: 'video1', description: 'desc1', category: crime_scene, created_at: 1.day.ago)
     v2 = Video.create(title: 'video2', description: 'desc2', category: crime_scene)
     expect(Video.search_by_title('video')).to eq([v2,v1])
+  end
+
+  context 'has many commments' do 
+    let(:comments) { 6.times { create(:comment) } }
+
+    it 'get average rating' do 
+      comments
+      video = Video.first
+      expect(video.comments_total_rate).to eq(video.comments_total_rate) 
+    end
   end
 end
