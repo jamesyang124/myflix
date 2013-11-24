@@ -6,7 +6,7 @@ FactoryGirl.define do
     sequence(:description) { |n| "desc#{n}"}
 
     factory :search do 
-      title { Faker::Name.title }
+      title { Faker::Lorem.sentence(8) }
     end
 
   end
