@@ -2,31 +2,80 @@ require 'spec_helper'
 
 describe SessionsController do 
   
-  context 'GET session#new' do 
-    it 'render sessions/edit template'do 
+  context 'GET sessions#new' do 
+    it 'render sessions/edit template for un-aunthenticated userr'do 
       get :edit
       expect(response).to render_template :edit
     end
+
+    it do 'redirect to home_path for authenticated user'
+      session[:user_id] = create(:registered_user).id
+      get :edit
+      expect(response).to redirect_to home_path
+    end
   end
 
-  context 'POST session#create' do
+  context 'POST sessions#create' do
     before :each do 
       @user = create(:registered_user)
     end
 
-    it 'redirect to videos#home if authenticate successed' do 
-      post :create, email: @user.email, password: @user.password
-      expect(response).to redirect_to home_path
+    describe 'with valid credentials' do
+      before :each do 
+        post :create, email: @user.email, password: @user.password
+      end
+
+      it 'sets @user' do 
+        expect(assigns(:user)).to eq(@user)
+      end
+
+      it 'set session id to current user' do 
+        expect(session[:user_id]).to eq(@user.id)
+      end
+
+      it 'set flash notice message' do
+        expect(flash[:notice]).not_to be_blank
+      end
+
+      it 'redirect to videos#home' do 
+        expect(response).to redirect_to home_path
+      end
     end
 
-    it 'render to /sessions/edit if password wrong' do 
-      post :create, email: @user.email, password: @user.password << "--"
-      expect(response).to render_template :edit
+    describe 'with invalid credentials' do
+      before :each do 
+        post :create, email: @user.email, password: @user.password << "--"
+      end
+
+      it 'do not set session id to current user' do
+        expect(session[:user_id]).to be_nil
+      end
+
+      it 'set flash.now error mesage' do 
+        expect(flash[:notice]).to be_blank
+        expect(flash.now[:info]).not_to be_blank
+      end
+
+      it 'render to /sessions/edit' do 
+        expect(response).to render_template :edit
+      end
+    end
+  end
+
+  context "GET sessions#destroy" do 
+    before :each do 
+      session[:user_id] = create(:registered_user).id
+      get :destroy
     end
 
-    it 'render to sessions/edit if email wrong' do 
-      post :create, email: @user.email << "--", password: @user.password
-      expect(response).to render_template :edit
+    it 'clean session id to nil' do 
+      expect(session[:user_id]).to be_nil
+    end
+    it 'set falsh notice' do 
+      expect(flash[:notice]).not_to be_blank 
+    end
+    it 'redirect to root_path' do 
+      expect(response).to redirect_to root_path
     end
   end
 end

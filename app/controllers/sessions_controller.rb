@@ -6,10 +6,10 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_by(email: params[:email]) 
+    @user = User.find_by(email: params[:email]) 
 
-    if user and user.authenticate(params[:password])
-      login_user!(user)
+    if @user and @user.authenticate(params[:password])
+      login_user!(@user)
     else
       flash.now[:info] = "Sign in failed, please check the sign-in information or register a new one."
       render :edit
