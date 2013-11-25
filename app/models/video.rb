@@ -1,5 +1,5 @@
 class Video < ActiveRecord::Base 
-  has_many :reviews
+  has_many :reviews, -> { order("created_at DESC") }
   belongs_to :category
   validates_presence_of :title, :description
 
@@ -31,7 +31,4 @@ class Video < ActiveRecord::Base
     total_rate.round(1)
   end
 
-  def reviews_order_by_created_date
-    reviews.order("created_at ASC")   
-  end
 end

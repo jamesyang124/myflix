@@ -29,7 +29,7 @@
         %h3 
           = "User Reviews (#{@video.reviews.size})"
       %ul
-        - @video.reviews_order_by_created_date.each do |r|
+        - @video.reviews.each do |r|
           %article.review
             %li.row
               .span2
