@@ -1,4 +1,4 @@
-['comment_seeds', Rails.env].each do |seed| 
+['review_seeds', Rails.env].each do |seed| 
   seed_file = "#{Rails.root}/db/seeds/#{seed}.rb"
   if File.exists?(seed_file)
     puts "Loading #{seed} data"
@@ -6,4 +6,4 @@
   end
 end  
 
-CommentSeeds::create_comments
+ReviewSeeds::create_reviews

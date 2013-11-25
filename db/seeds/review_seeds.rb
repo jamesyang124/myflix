@@ -1,6 +1,6 @@
 require 'faker'
 
-module CommentSeeds
+module ReviewSeeds
   def self.create_users
     users = User.all
     if users.blank? || users.size < 8
@@ -30,19 +30,19 @@ module CommentSeeds
     end 
   end
 
-  def self.create_comments
+  def self.create_reviews
     create_users()
     create_videos()
     users = User.all
     Video.all.each do |v| 
-      if v.comments.blank?
+      if v.reviews.blank?
         (Random.rand()*8 + 1).to_i.times do 
-          comment = Comment.create( opinion: Faker::Lorem.paragraph((Random.rand*8).to_i + 1), 
-                          rating: (Random.rand*4 + 1).round(1), 
+          review = Review.create( content: Faker::Lorem.paragraph((Random.rand*8).to_i + 1), 
+                          rating: (Random.rand*4 + 1).round, 
                           video: v, 
                           user: users.sample)
-          comment.created_at -= ((Random.rand(1000)*100000).to_i + 1)
-          comment.save
+          review.created_at -= ((Random.rand(1000)*100000).to_i + 1)
+          review.save
         end
       end
     end

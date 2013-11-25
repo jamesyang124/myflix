@@ -14,4 +14,8 @@ class VideosController < ApplicationController
   def search
     @items = Video.search_by_title_categorized(params[:search])
   end
+
+  def add_review
+    
+  end
 end
