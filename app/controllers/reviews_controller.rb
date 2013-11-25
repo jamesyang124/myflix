@@ -6,6 +6,7 @@ class ReviewsController < ApplicationController
       redirect_to @video
     else
       flash.now[:error] = "Lacking information for the review, please fill in and try again."
+      @video.reload
       render 'videos/video_show'
     end
   end
