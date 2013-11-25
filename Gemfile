@@ -17,12 +17,16 @@ group :development, :test do
   gem 'pry'
   gem 'pry-nav'
   gem 'rspec-rails', '~> 2.14.0'
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'meta_request'
+  gem 'fabrication'
 end
 
 group :test do
   gem 'shoulda-matchers', '~> 2.4.0'
   gem 'factory_girl_rails', '~> 4.3.0'
-  gem "faker", "~> 1.1.2"
+  gem "faker", '~> 1.2.0'
 end
 
 group :production do

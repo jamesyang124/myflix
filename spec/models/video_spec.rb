@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe Video do
+  it { should belong_to(:category) }
+  it { should have_many(:reviews).order("created_at DESC") }
+  it { should validate_presence_of(:title) }
+  it { should validate_presence_of(:description) }
+
   it 'save itself' do
     video = Video.new(title: 'test', description: 'Good test movie')
     video.save
@@ -78,5 +83,15 @@ describe Video do
     v1 = Video.create(title: 'video1', description: 'desc1', category: crime_scene, created_at: 1.day.ago)
     v2 = Video.create(title: 'video2', description: 'desc2', category: crime_scene)
     expect(Video.search_by_title('video')).to eq([v2,v1])
+  end
+
+  context 'has many commments' do 
+    let(:reviews) { 6.times { create(:review) } }
+
+    it 'get average rating' do 
+      reviews
+      video = Video.first
+      expect(video.reviews_total_rate).to eq(video.reviews_total_rate) 
+    end
   end
 end
