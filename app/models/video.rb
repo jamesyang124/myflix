@@ -26,7 +26,8 @@ class Video < ActiveRecord::Base
     total_rate = reviews.reduce(total_rate) do |sum, c| 
                   sum += c.rating
                  end
-    total_rate /= reviews.count
+    total_rate /= reviews.count unless reviews
+    # pending implementation to return nil or 0 when no reviews
     total_rate.round(1)
   end
 

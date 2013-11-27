@@ -15,11 +15,12 @@
               %th(width="15%") Remove
           %tbody
             - @queue_items.each do |q|
+              - p = "#{q.position}"
               %tr
+                %td 
+                  %input(type="text" value=p)
                 %td
-                  %input(type="text" value="1")
-                %td
-                  = link_to "Futurama"
+                  = link_to "#{q.video.title}"
                 %td
                   = button_to "Play", nil, class: "btn"
                 %td
@@ -30,7 +31,7 @@
                     %option(value="2") 2 Stars
                     %option(value="1") 1 Star
                 %td
-                  = link_to "TV Shows"
+                  = link_to "#{q.video.category.name}"
                 %td
                   = link_to "", method: :post do
                     %i.icon-remove

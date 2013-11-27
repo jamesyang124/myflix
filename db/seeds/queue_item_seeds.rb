@@ -37,7 +37,7 @@ module QueueItemSeeds
     User.all.sample(3).each do |u|
       if u.queue_items.blank? 
         6.times do |d|
-          u.queue_items.create(position: d, video_id: Video.all.sample.id, user: u)     
+          u.queue_items.create(position: d, video: Video.all.sample, user: u)     
         end
       end
     end
