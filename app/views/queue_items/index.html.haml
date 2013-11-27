@@ -24,12 +24,7 @@
                 %td
                   = button_to "Play", nil, class: "btn"
                 %td
-                  %select(name="")
-                    %option(value="5") 5 Stars
-                    %option(value="4") 4 Stars
-                    %option(value="3") 3 Stars
-                    %option(value="2") 2 Stars
-                    %option(value="1") 1 Star
+                  = select_tag "", options_for_select([5,4,3,2,1].map{ |number| [pluralize(number,"Star"), number.to_s]}, q.rating.to_i)
                 %td
                   = link_to "#{q.category_name}", category_path(q.category)
                 %td
