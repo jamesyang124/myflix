@@ -12,11 +12,19 @@ class QueueItem < ActiveRecord::Base
     reviews = Review.where(user: user, video: video)
     total_rate = 0.00
     total_rate = reviews.reduce(total_rate) do |sum, c| 
-                  sum += c.rating
-                 end
+      sum += c.rating
+    end
     unless reviews.blank?
       total_rate /= reviews.count 
       total_rate.round(1)
     end
+  end
+
+  def category_name
+    video.category.name
+  end
+
+  def category
+    video.category
   end
 end

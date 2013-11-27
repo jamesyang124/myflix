@@ -1,5 +1,16 @@
 require 'spec_helper'
 
+def avg_rating(reviews) 
+  total_rate = 0.00
+  total_rate = reviews.reduce(total_rate) do |sum, c| 
+    sum += c.rating
+  end
+  unless reviews.blank?
+    total_rate /= reviews.count 
+    total_rate.round(1)
+  end
+end
+
 describe QueueItem do 
   it { should belong_to(:user) }
   it { should belong_to(:video) }
@@ -23,11 +34,27 @@ describe QueueItem do
     it 'returns the rating of associated video when review present' do
       review = create(:review, user: @user)
       @video.reviews << review
-      expect(@queue_item.rating).to eq(@video.reviews_total_rate)
+      user_reviews = @video.reviews.where(user: @user)
+      expect(@queue_item.rating).to eq(avg_rating(user_reviews))
     end
 
     it 'returns nil when review does not present' do
       expect(@queue_item.rating).to be_nil
     end
   end 
+
+  describe '#category AND #category_name' do
+    before :each do 
+      @category = create(:valid_category)
+      @video.category = @category
+    end
+
+    it 'returns the category name of associated video' do 
+      expect(@queue_item.category_name).to eq(@video.category.name)
+    end
+
+    it 'returns the category of associated video' do 
+      expect(@queue_item.category).to eq(@video.category)
+    end
+  end
 end
