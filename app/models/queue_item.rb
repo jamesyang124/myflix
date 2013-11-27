@@ -4,9 +4,9 @@ class QueueItem < ActiveRecord::Base
 
   validates_presence_of :position, :user, :video
 
-  def video_title
-    video.title
-  end
+  delegate :category, to: :video
+  delegate :title, to: :video, prefix: :video
+  #delegate :name, to: :video
 
   def rating
     reviews = Review.where(user: user, video: video)
@@ -21,10 +21,6 @@ class QueueItem < ActiveRecord::Base
   end
 
   def category_name
-    video.category.name
-  end
-
-  def category
-    video.category
+    category.name
   end
 end

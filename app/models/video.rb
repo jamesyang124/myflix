@@ -3,6 +3,7 @@ class Video < ActiveRecord::Base
   belongs_to :category
   validates_presence_of :title, :description
 
+  #delegate :name, to: :category
 
   def self.search_by_title(str)
     if str.blank? || str.match(/[%|_|!]/)
