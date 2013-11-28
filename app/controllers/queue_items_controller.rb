@@ -12,7 +12,7 @@ class QueueItemsController < ApplicationController
   end
 
   def destroy
-    destroy_queue_item(params[:id])
+    destroy_queue_item
     redirect_to queue_items_path  
   end
 
@@ -30,15 +30,20 @@ private
     current_user.queue_items.map(&:video).include?(Video.find(video_id)) unless Video.where(id: video_id).blank?
   end
 
-  def destroy_queue_item(queue_id)
-    if current_user == QueueItem.find(queue_id).user
-      index = current_user.queue_items.sort_by!(&:position).index(QueueItem.find(queue_id))
+  def destroy_queue_item
+    item = QueueItem.find(params[:id])
+    if current_user.queue_items.include?(item)
+      reorder_position(item)
+      QueueItem.destroy(params[:id])
+    end
+  end
 
-      current_user.queue_items.sort_by!(&:position).drop(index).each do |q| 
-        q.position -=1 
-        q.save
-      end
-      QueueItem.destroy(queue_id)
+  def reorder_position(queue_item)
+    index = current_user.queue_items.sort_by!(&:position).index(queue_item)
+
+    current_user.queue_items.sort_by!(&:position).drop(index).each do |q| 
+      q.position -=1 
+      q.save
     end
   end
 end
