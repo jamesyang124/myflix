@@ -35,9 +35,10 @@ module QueueItemSeeds
     create_videos()
     
     User.all.sample(3).each do |u|
-      if u.queue_items.blank? 
-        6.times do |d|
-          u.queue_items.create(position: d, video: Video.all.sample, user: u)     
+      if u.queue_items.blank?
+        s = 1
+        1.upto(6) do
+          s += 1 if u.queue_items.create(position: s, video: Video.all.sample, user: u).id
         end
       end
     end

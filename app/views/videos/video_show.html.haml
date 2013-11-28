@@ -11,7 +11,7 @@
         %p #{@video.description}
         .actions
           %a.btn.btn-primary(href="") Watch Now
-          %a.btn(href="") + My Queue
+          = link_to "+ My Queue", queue_items_path(video_id: @video.id), method: :post, class: 'btn'
 
 %section.reviews.container
   .row
@@ -20,7 +20,7 @@
         %fieldset
           = f.label :rating, "Rate this video"
           = f.select :rating, options_for_select([5,4,3,2,1].map{ |number| [pluralize(number,"Star"), number.to_s]})
-          = f.label :conten, "Write Review"
+          = f.label :content, "Write Review"
           = f.text_area :content, rows: 6, class: "span6"
         %fieldset.actions.clearfix
           = f.submit "Submit", class: "btn"
