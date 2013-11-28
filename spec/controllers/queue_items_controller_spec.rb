@@ -5,8 +5,10 @@ describe QueueItemsController do
     before :each do 
       @user = create(:registered_user)
       session[:user_id] = @user.id
-      @q_item_1 = create(:queue_item, video_id: create(:video).id, user_id: @user.id)
-      @q_item_2 = create(:queue_item, video_id: create(:video).id, user_id: @user.id)
+      video_1 = create(:video)
+      video_2 = create(:video)
+      @q_item_1 = create(:queue_item, video: video_1, user_id: @user.id)
+      @q_item_2 = create(:queue_item, video: video_2, user_id: @user.id)
     end
 
     describe 'GET queue_items#index' do 
@@ -21,7 +23,7 @@ describe QueueItemsController do
       end
     end
 
-    describe 'POST queue_items#crete' do
+    describe 'POST queue_items#create' do
       before :each do 
         @video = create(:video)
         post :create, video_id: @video.id
@@ -52,6 +54,31 @@ describe QueueItemsController do
         }.to change(QueueItem, :count).by(0) 
       end
     end
+
+    describe 'DELETE queue_items#destroy' do
+      before :each do
+        video = create(:video) 
+        @q = create(:queue_item, video: video, user: @user)
+      end
+
+      it 'redirect to queue_items/my_queue page' do 
+        delete :destroy, id: @q
+        expect(response).to redirect_to queue_items_path
+      end
+  
+      it 'remove selected queue item' do 
+        expect{
+          delete :destroy, id: @q
+        }.to change(QueueItem, :count).by(-1)
+      end
+
+      it "does not remove the queue item which is not in current user's queue" do
+        q = create(:queue_item, video: @q.video, user: create(:user)) 
+        expect{
+          delete :destroy, id: q
+        }.not_to change(QueueItem, :count) 
+      end
+    end
   end
   
   context 'un-authenticated user' do 
@@ -79,6 +106,14 @@ describe QueueItemsController do
       end
 
       it 'redirect_to sign in path' do 
+        expect(response).to redirect_to sign_in_path
+      end
+    end
+
+    describe 'DELETE queue_items#destroy' do 
+      it 'redirect to sign in path' do 
+        q = create(:queue_item, video: create(:video), user: create(:user))
+        delete :destroy, id: q
         expect(response).to redirect_to sign_in_path
       end
     end
