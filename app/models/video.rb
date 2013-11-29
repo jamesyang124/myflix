@@ -3,6 +3,7 @@ class Video < ActiveRecord::Base
   belongs_to :category
   validates_presence_of :title, :description
 
+  #delegate :name, to: :category
 
   def self.search_by_title(str)
     if str.blank? || str.match(/[%|_|!]/)
@@ -12,7 +13,6 @@ class Video < ActiveRecord::Base
       self.where(["LOWER(title) LIKE LOWER(?)", "%#{str}%"]).order("created_at DESC")
     end
   end
-
   def self.search_by_title_categorized(search_term)
     videos = search_by_title(search_term)
     result = videos.reduce(SearchResult.new) do |result, video|
@@ -25,10 +25,12 @@ class Video < ActiveRecord::Base
   def reviews_total_rate
     total_rate = 0.00
     total_rate = reviews.reduce(total_rate) do |sum, c| 
-                  sum += c.rating
-                 end
-    total_rate /= reviews.count
-    total_rate.round(1)
+      sum += c.rating
+    end
+    unless reviews.blank?
+      total_rate /= reviews.count 
+      total_rate.round(1)
+    end
   end
 
 end
