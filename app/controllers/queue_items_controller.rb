@@ -19,7 +19,11 @@ class QueueItemsController < ApplicationController
 private 
 
   def put_video_to_queue(queue_items)
-    queue_items.create(user: current_user, video_id: params[:video_id], position: new_position) unless video_in_queue?(params[:video_id])
+    queue_items.create(
+        user: current_user, 
+        video_id: params[:video_id], 
+        position: new_position
+      ) unless video_in_queue?(params[:video_id])
   end
 
   def new_position

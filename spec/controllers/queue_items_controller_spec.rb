@@ -72,11 +72,17 @@ describe QueueItemsController do
         }.to change(QueueItem, :count).by(-1)
       end
 
-      it "does not remove the queue item which is not in current user's queue" do
+      it "does not remove queue item which is not in current user's queue" do
         q = create(:queue_item, video: @q.video, user: create(:user)) 
         expect{
           delete :destroy, id: q
         }.not_to change(QueueItem, :count) 
+      end
+
+      it 'raise error when DELETE without params[:id]' do 
+        expect{
+          delete :destroy
+        }.to raise_error(ActionController::UrlGenerationError)
       end
     end
   end
