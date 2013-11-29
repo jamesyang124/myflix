@@ -79,7 +79,7 @@ describe QueueItemsController do
         }.not_to change(QueueItem, :count) 
       end
 
-      it 'raise error when DELETE without params[:id]' do 
+      it 'raise exception when DELETE without params[:id]' do 
         expect{
           delete :destroy
         }.to raise_error(ActionController::UrlGenerationError)
