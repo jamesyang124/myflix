@@ -2,12 +2,11 @@ class QueueItem < ActiveRecord::Base
   belongs_to :user
   belongs_to :video
 
-  validates_presence_of :position, :user, :video
-  validates_uniqueness_of :video, scope: :user
+  validates_presence_of :position, :user_id, :video_id
+  validates_uniqueness_of :video_id, scope: :user_id
 
   delegate :category, to: :video
   delegate :title, to: :video, prefix: :video
-  #delegate :name, to: :video
 
   def rating
     reviews = Review.where(user: user, video: video)

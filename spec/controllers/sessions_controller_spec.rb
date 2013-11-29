@@ -4,13 +4,13 @@ describe SessionsController do
   
   context 'GET sessions#new' do 
     it 'render sessions/edit template for un-aunthenticated userr'do 
-      get :edit
-      expect(response).to render_template :edit
+      get :new
+      expect(response).to render_template :new
     end
 
     it do 'redirect to home_path for authenticated user'
       session[:user_id] = create(:registered_user).id
-      get :edit
+      get :new
       expect(response).to redirect_to home_path
     end
   end
@@ -56,8 +56,8 @@ describe SessionsController do
         expect(flash.now[:info]).not_to be_blank
       end
 
-      it 'render to /sessions/edit' do 
-        expect(response).to render_template :edit
+      it 'render to /sessions/new' do 
+        expect(response).to render_template :new
       end
     end
   end
