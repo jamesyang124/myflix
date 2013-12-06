@@ -12,11 +12,12 @@ class QueueItemsController < ApplicationController
   end
 
   def update_queue
-    params[:queue_items].each do |q|
-      item = QueueItem.find(q[:id])
-      item.update_attributes(position: q[:position])
+    begin
+      update_queue_items
+      normalize_position
+    rescue ActiveRecord::RecordInvalid
+      flash[:error] = 'Invalid input for the update' 
     end
-    normalize_position
     redirect_to queue_items_path
   end
 
@@ -46,14 +47,23 @@ private
   def destroy_queue_item
     item = QueueItem.find(params[:id])
     if current_user.queue_items.include?(item)
-      normalize_position
       QueueItem.destroy(params[:id])
+      normalize_position
     end
   end
 
   def normalize_position
-    current_user.queue_items.sort_by(&:position).each_with_index do |item, index|
+    current_user.reload.queue_items.sort_by!(&:position).each_with_index do |item, index|
       item.update_attributes(position: index + 1)
+    end
+  end
+
+  def update_queue_items
+    ActiveRecord::Base.transaction do 
+      params[:queue_items].each do |q|
+        item = QueueItem.find(q[:id])
+        item.update_attributes!(position: q[:position]) if item.user == current_user
+      end
     end
   end
 end

@@ -18,6 +18,7 @@ describe QueueItem do
   it { should validate_presence_of(:user_id) }
   it { should validate_presence_of(:video_id) }
   it { should validate_uniqueness_of(:video_id).scoped_to(:user_id) }
+  it { should validate_numericality_of(:position).only_integer }
 
   before :each do 
     @video = create(:video)
