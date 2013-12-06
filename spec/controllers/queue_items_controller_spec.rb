@@ -85,6 +85,57 @@ describe QueueItemsController do
         }.to raise_error(ActionController::UrlGenerationError)
       end
     end
+
+    describe 'POST update_queue' do
+      context 'input valid position' do 
+        before :each do 
+          @q_item_1.position = 1
+          @q_item_2.position = 2
+        end
+
+        it 'reorder the q items' do
+          post :update_queue, queue_items: [{id: @q_item_2.id, position: @q_item_2.position}, {id: @q_item_1.id, position: @q_item_1.position}] 
+          expect(@user.reload.queue_items).to eq([@q_item_1, @q_item_2])
+          expect(@user.reload.queue_items).not_to eq([@q_item_2, @q_item_1])
+        end
+
+        it 'normailize the position order' do
+          @q_item_1.position = 2
+          @q_item_2.position = 3 
+          post :update_queue, queue_items: [{id: @q_item_2.id, position: @q_item_2.position}, {id: @q_item_1.id, position: @q_item_1.position}]
+          expect(@user.reload.queue_items.map(&:position)).to eq([1, 2])
+          expect(@q_item_2.reload.position).to eq(2)
+        end
+
+        it 'redirect to queue_items_path' do
+          post :update_queue, queue_items: [{id: @q_item_2.id, position: @q_item_2.position}, {id: @q_item_1.id, position: @q_item_1.position}]
+          expect(response).to redirect_to queue_items_path
+        end
+      end
+
+      context 'input invalid position' do 
+        before :each do 
+          @q_item_1.position = 1
+          @q_item_2.position = 2
+        end
+        it 'redirect to queue_items_path without update' do 
+          
+          #expect(response).to redirect_to queue_items_path
+        end
+
+        it 'unchange the queue' do 
+
+        end
+
+        it 'flash error message' do 
+
+        end
+      end
+
+      it 'update a queue items not belongs to current user' do 
+
+      end
+    end
   end
   
   context 'un-authenticated user' do 
@@ -123,6 +174,13 @@ describe QueueItemsController do
         expect(response).to redirect_to sign_in_path
       end
     end
-  end
 
+    describe 'POST update_queue' do
+      it 'redirect to sign_in_path' do 
+        post :update_queue, queue_items: [{id:1, position:2}]
+        expect(response).to redirect_to sign_in_path
+      end
+    end
+
+  end
 end

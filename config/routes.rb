@@ -17,6 +17,8 @@ Myflix::Application.routes.draw do
   end
 
   resources 'queue_items', only: [:index, :create, :destroy], path: 'my_queue'
+  post 'update_queue', to: 'queue_items#update_queue'
+
 
   root to: 'pages#front'
   get 'ui(/:action)', controller: 'ui'

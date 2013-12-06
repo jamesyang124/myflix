@@ -7,4 +7,5 @@ describe User do
   it { should validate_uniqueness_of(:email) }
   it { should have_many(:reviews) }
   it { should have_secure_password }
+  it { should have_many(:queute_items).order(:position)}
 end

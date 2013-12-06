@@ -11,6 +11,15 @@ class QueueItemsController < ApplicationController
     redirect_to queue_items_path
   end
 
+  def update_queue
+    params[:queue_items].each do |q|
+      item = QueueItem.find(q[:id])
+      item.update_attributes(position: q[:position])
+    end
+    normalize_position
+    redirect_to queue_items_path
+  end
+
   def destroy
     destroy_queue_item
     redirect_to queue_items_path  
@@ -37,17 +46,14 @@ private
   def destroy_queue_item
     item = QueueItem.find(params[:id])
     if current_user.queue_items.include?(item)
-      reorder_position(item)
+      normalize_position
       QueueItem.destroy(params[:id])
     end
   end
 
-  def reorder_position(queue_item)
-    index = current_user.queue_items.sort_by!(&:position).index(queue_item)
-
-    current_user.queue_items.sort_by!(&:position).drop(index).each do |q| 
-      q.position -=1 
-      q.save
+  def normalize_position
+    current_user.queue_items.sort_by(&:position).each_with_index do |item, index|
+      item.update_attributes(position: index + 1)
     end
   end
 end
