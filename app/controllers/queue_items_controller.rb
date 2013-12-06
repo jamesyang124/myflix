@@ -14,7 +14,7 @@ class QueueItemsController < ApplicationController
   def update_queue
     begin
       update_queue_items
-      normalize_position
+      current_user.normalize_queue_items_position
     rescue ActiveRecord::RecordInvalid
       flash[:error] = 'Invalid input for the update' 
     end
@@ -48,13 +48,7 @@ private
     item = QueueItem.find(params[:id])
     if current_user.queue_items.include?(item)
       QueueItem.destroy(params[:id])
-      normalize_position
-    end
-  end
-
-  def normalize_position
-    current_user.reload.queue_items.sort_by!(&:position).each_with_index do |item, index|
-      item.update_attributes(position: index + 1)
+      current_user.normalize_queue_items_position
     end
   end
 
