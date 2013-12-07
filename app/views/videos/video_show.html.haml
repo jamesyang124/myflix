@@ -19,7 +19,7 @@
       = form_for [@video, Review.new] do |f|
         %fieldset
           = f.label :rating, "Rate this video"
-          = f.select :rating, options_for_select([5,4,3,2,1].map{ |number| [pluralize(number,"Star"), number.to_s]})
+          = f.select :rating, options_for_video_reviews
           = f.label :content, "Write Review"
           = f.text_area :content, rows: 6, class: "span6"
         %fieldset.actions.clearfix
@@ -34,7 +34,7 @@
             %li.row
               .span2
                 %span 
-                  = "Rating: #{r.rating.round} / 5"
+                  = r.rating ? "Rating: #{r.rating} / 5" : "Rating: N/A" 
                 %p 
                   by 
                   %a(href="") 

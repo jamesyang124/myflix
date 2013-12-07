@@ -11,6 +11,16 @@ class QueueItemsController < ApplicationController
     redirect_to queue_items_path
   end
 
+  def update_queue
+    begin
+      update_queue_items
+      current_user.normalize_queue_items_position
+    rescue ActiveRecord::RecordInvalid
+      flash[:error] = 'Invalid input for the update' 
+    end
+    redirect_to queue_items_path
+  end
+
   def destroy
     destroy_queue_item
     redirect_to queue_items_path  
@@ -19,7 +29,11 @@ class QueueItemsController < ApplicationController
 private 
 
   def put_video_to_queue(queue_items)
-    queue_items.create(user: current_user, video_id: params[:video_id], position: new_position) unless video_in_queue?(params[:video_id])
+    queue_items.create(
+        user: current_user, 
+        video_id: params[:video_id], 
+        position: new_position
+      ) unless video_in_queue?(params[:video_id])
   end
 
   def new_position
@@ -33,17 +47,17 @@ private
   def destroy_queue_item
     item = QueueItem.find(params[:id])
     if current_user.queue_items.include?(item)
-      reorder_position(item)
       QueueItem.destroy(params[:id])
+      current_user.normalize_queue_items_position
     end
   end
 
-  def reorder_position(queue_item)
-    index = current_user.queue_items.sort_by!(&:position).index(queue_item)
-
-    current_user.queue_items.sort_by!(&:position).drop(index).each do |q| 
-      q.position -=1 
-      q.save
+  def update_queue_items
+    ActiveRecord::Base.transaction do 
+      params[:queue_items].each do |q|
+        item = QueueItem.find(q[:id])
+        item.update_attributes!(position: q[:position], rating: q[:rating]) if item.user == current_user
+      end
     end
   end
 end

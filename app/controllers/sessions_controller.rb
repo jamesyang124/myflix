@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
   before_action :require_user, only: [:destroy]
 
-  def edit
+  def new
     redirect_to home_path if logged_in?
   end
 
@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
       login_user!(@user)
     else
       flash.now[:info] = "Sign in failed, please check the sign-in information or register a new one."
-      render :edit
+      render :new
     end
   end
 
