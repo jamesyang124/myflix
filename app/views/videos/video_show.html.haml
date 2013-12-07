@@ -34,7 +34,7 @@
             %li.row
               .span2
                 %span 
-                  = "Rating: #{r.rating} / 5"
+                  = r.rating ? "Rating: #{r.rating} / 5" : "Rating: N/A" 
                 %p 
                   by 
                   %a(href="") 

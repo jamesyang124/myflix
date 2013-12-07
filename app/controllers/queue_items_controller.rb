@@ -56,8 +56,7 @@ private
     ActiveRecord::Base.transaction do 
       params[:queue_items].each do |q|
         item = QueueItem.find(q[:id])
-        item.update_attributes!(position: q[:position]) if item.user == current_user
-        item.update_attributes!(rating: q[:rating]) if item.user == current_user && q[:rating]
+        item.update_attributes!(position: q[:position], rating: q[:rating]) if item.user == current_user
       end
     end
   end
