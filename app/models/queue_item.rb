@@ -10,18 +10,29 @@ class QueueItem < ActiveRecord::Base
   delegate :title, to: :video, prefix: :video
 
   def rating
-    reviews = Review.where(user: user, video: video)
-    total_rate = 0.00
-    total_rate = reviews.reduce(total_rate) do |sum, c| 
-      sum += c.rating
-    end
-    unless reviews.blank?
-      total_rate /= reviews.count 
-      total_rate.round(1)
+    review.rating if review
+  end
+
+  def rating= (new_rating)
+    if review
+      if new_rating == ""
+        review.update_column(:rating, nil)
+      else 
+        review.update_column(:rating, new_rating)
+      end
+    else 
+      review = Review.new(user: user, video: video, rating: new_rating)
+      review.save(validate: false)
     end
   end
 
   def category_name
     category.name
+  end
+
+private
+
+  def review
+    @review ||= Review.where(user: user, video: video).last
   end
 end

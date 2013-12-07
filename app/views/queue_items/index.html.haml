@@ -26,7 +26,7 @@
                   %td
                     = button_to "Play", nil, class: "btn"
                   %td
-                    = select_tag "", options_for_select([5,4,3,2,1].map{ |number| [pluralize(number,"Star"), number.to_s]}, q.rating.to_i)
+                    = select_tag "queue_items[][rating]", options_for_video_reviews(q.rating), include_blank: true
                   %td
                     = link_to "#{q.category_name}", category_path(q.category)
                   %td
