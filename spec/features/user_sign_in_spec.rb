@@ -4,10 +4,7 @@ require 'faker'
 feature 'user signs in' do 
   scenario 'with valid email and password' do
     user = create(:user) 
-    visit sign_in_path
-    fill_in 'email', with: user.email
-    fill_in 'password', with: user.password
-    click_button 'Sign In'
+    sign_in(user)
     expect(page).to have_content user.full_name
   end
 end
@@ -22,6 +19,6 @@ feature 'user registration' do
     fill_in 'user_password_confirmation', with: pword
     click_button 'Sign Up'
     expect(page).to have_content("Sign Up Now!")
-    expect(page.has_link?("Sign Up Now!")).to eq(true)
+    expect(page.has_link?("Sign Up Now!")).to be_true
   end
 end

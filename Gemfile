@@ -28,6 +28,7 @@ group :test do
   gem 'factory_girl_rails', '~> 4.3.0'
   gem "faker", '~> 1.2.0'
   gem 'capybara' 
+  gem 'launchy'
 end
 
 group :production do
