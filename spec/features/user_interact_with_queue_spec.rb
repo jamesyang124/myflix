@@ -9,51 +9,72 @@ feature 'user interacts with queue' do
     video3 = create(:video, category: category)
     
     sign_in
-    find("a[href='/videos/#{video1.id}']").click
-    expect(page).to have_content(video1.title)
-    
-    click_link('+ My Queue')
-    expect(page).to have_content(video1.title)
+
+    add_video_to_queue(video1)
+    expect_video_in_queue(video1)
 
     visit video_path(video1)
-    expect(page).not_to have_content("+ My Queue")
+    expect_link_not_to_be_seen("+ My Queue")
 
-    visit home_path
-    find("a[href='/videos/#{video2.id}']").click
-    click_link('+ My Queue')
+    add_video_to_queue(video2)
+    add_video_to_queue(video3)
 
-    visit home_path
-    find("a[href='/videos/#{video3.id}']").click
-    click_link('+ My Queue')
+    # By xpath, do not need to create customed attribute by extra coding work in queue_items/index.html.haml
+    set_video_position(video1, 2)
+    set_video_position(video2, 3)
+    set_video_position(video3, 1)
+    update_queue
 
-    within(:xpath, "//tr[contains(., '#{video1.title}')]") do 
-      fill_in "queue_items[][position]", with: 2
-    end
-
-    within(:xpath, "//tr[contains(., '#{video2.title}')]") do 
-      fill_in "queue_items[][position]", with: 3
-    end
-
-    within(:xpath, "//tr[contains(., '#{video3.title}')]") do 
-      fill_in "queue_items[][position]", with: 1
-    end
-    
-    # by xpath, do not need to create customed attribute by extra coding work in queue_items/index.html.haml
-    expect(find(:xpath, "//tr[contains(., '#{video1.title}')]//input[@type='text']").value).to eq("2")
-    expect(find(:xpath, "//tr[contains(., '#{video2.title}')]//input[@type='text']").value).to eq("3")
-    expect(find(:xpath, "//tr[contains(., '#{video3.title}')]//input[@type='text']").value).to eq("1")
+    expect_video_position(video1, 2)
+    expect_video_position(video2, 3)
+    expect_video_position(video3, 1)
 
     # find by customed attribute
-    find("input[data-video-id='#{video1.id}']").set(2)
-    find("input[data-video-id='#{video2.id}']").set(3)
-    find("input[data-video-id='#{video3.id}']").set(1)
+
+    find_by_customed_attribute(video1, 3)
+    find_by_customed_attribute(video2, 1)
+    find_by_customed_attribute(video3, 2)
+    update_queue
     
-    click_button "Update Instant Queue"
-    
-    expect(find("input[data-video-id='#{video1.id}']").value).to eq("2")
-    expect(find("input[data-video-id='#{video2.id}']").value).to eq("3")
-    expect(find("input[data-video-id='#{video3.id}']").value).to eq("1")
+    expect_video_position_by_customed_attribute(video1, 3)
+    expect_video_position_by_customed_attribute(video2, 1)
+    expect_video_position_by_customed_attribute(video3, 2)    
 
   end
 
+  def expect_video_in_queue(video)
+    expect(page).to have_content(video.title)  
+  end
+
+  def expect_link_not_to_be_seen(label)
+    expect(page).not_to have_content(label)
+  end
+
+  def expect_video_position(video, position)
+    expect(find(:xpath, "//tr[contains(., '#{video.title}')]//input[@type='text']").value).to eq(position.to_s)
+  end
+
+  def set_video_position(video, position)
+    within(:xpath, "//tr[contains(., '#{video.title}')]") do 
+      fill_in "queue_items[][position]", with: position
+    end    
+  end
+
+  def add_video_to_queue(video)
+    visit home_path
+    find("a[href='/videos/#{video.id}']").click
+    click_link('+ My Queue')  
+  end
+
+  def find_by_customed_attribute(video, position)
+    find("input[data-video-id='#{video.id}']").set(position)
+  end
+
+  def expect_video_position_by_customed_attribute(video, position)
+    expect(find("input[data-video-id='#{video.id}']").value).to eq(position.to_s)
+  end  
+
+  def update_queue
+    click_button "Update Instant Queue"
+  end
 end
