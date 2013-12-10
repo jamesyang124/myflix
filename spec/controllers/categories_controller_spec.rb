@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe CategoriesController do 
-  context 'have signed in' do 
-    before :each do 
-      session[:user_id] = create(:user)
-      @category = create(:category)
-    end
+  before :each do
+    set_current_user 
+    @category = create(:category)
+  end
 
+  context 'have signed in' do 
     it 'GET categories#show' do 
       get :show, id: @category
       expect(assigns(:category)).to eq(@category) 
@@ -14,14 +14,10 @@ describe CategoriesController do
   end
 
   context 'have not signed in' do 
-    before :each do 
-      session[:user_id] = nil
-      @category = create(:category)
-    end
-
-    it 'GET categories#show' do 
-      get :show, id: @category
-      expect(response).to redirect_to sign_in_path 
+    context 'GET categories#show' do 
+      it_behaves_like 'require_sign_in' do 
+        let(:action) { get :show, id: @category }
+      end
     end
   end
 end
