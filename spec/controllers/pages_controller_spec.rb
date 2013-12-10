@@ -4,7 +4,7 @@ describe PagesController do
 
   context 'is a member' do
     before :each do 
-      session[:user_id] = create(:user)
+      set_current_user
     end
 
     it 'browse pages#front 'do 
@@ -15,7 +15,7 @@ describe PagesController do
 
   context 'is not a member' do
     before :each do 
-      session[:user_id] = nil
+      clear_current_user
     end
 
     it 'browse pages#front 'do 

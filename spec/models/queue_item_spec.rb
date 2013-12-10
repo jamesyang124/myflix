@@ -21,9 +21,7 @@ describe QueueItem do
   it { should validate_numericality_of(:position).only_integer }
 
   before :each do 
-    @video = create(:video)
-    @user = create(:registered_user)
-    @queue_item = create(:queue_item, video: @video, user: @user)
+    set_new_queue_item_instance
   end
 
   describe '#video_title ' do 
