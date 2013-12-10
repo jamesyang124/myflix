@@ -15,7 +15,6 @@ class User < ActiveRecord::Base
   end
 
   def queued_video?(video)
-    #queue_items.map(&:video).include?(video)
     queue_items.find_by(video_id: video.id)
   end
 end

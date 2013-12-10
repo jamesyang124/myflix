@@ -30,7 +30,6 @@ feature 'user interacts with queue' do
     expect_video_position(video3, 1)
 
     # find by customed attribute
-
     find_by_customed_attribute(video1, 3)
     find_by_customed_attribute(video2, 1)
     find_by_customed_attribute(video3, 2)
