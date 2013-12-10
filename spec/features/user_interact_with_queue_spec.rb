@@ -26,6 +26,24 @@ feature 'user interacts with queue' do
     find("a[href='/videos/#{video3.id}']").click
     click_link('+ My Queue')
 
+    within(:xpath, "//tr[contains(., '#{video1.title}')]") do 
+      fill_in "queue_items[][position]", with: 2
+    end
+
+    within(:xpath, "//tr[contains(., '#{video2.title}')]") do 
+      fill_in "queue_items[][position]", with: 3
+    end
+
+    within(:xpath, "//tr[contains(., '#{video3.title}')]") do 
+      fill_in "queue_items[][position]", with: 1
+    end
+    
+    # by xpath, do not need to create customed attribute by extra coding work in queue_items/index.html.haml
+    expect(find(:xpath, "//tr[contains(., '#{video1.title}')]//input[@type='text']").value).to eq("2")
+    expect(find(:xpath, "//tr[contains(., '#{video2.title}')]//input[@type='text']").value).to eq("3")
+    expect(find(:xpath, "//tr[contains(., '#{video3.title}')]//input[@type='text']").value).to eq("1")
+
+    # find by customed attribute
     find("input[data-video-id='#{video1.id}']").set(2)
     find("input[data-video-id='#{video2.id}']").set(3)
     find("input[data-video-id='#{video3.id}']").set(1)
