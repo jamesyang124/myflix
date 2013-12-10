@@ -8,7 +8,7 @@ describe VideosController do
 
     before :each do 
       @video = create(:video)
-      session[:user_id] = create(:user)
+      set_current_user
     end 
 
     describe 'GET videos#index' do  
@@ -61,25 +61,22 @@ describe VideosController do
   end
 
   context 'have not singed in' do 
-    before :each do 
-      @video = create(:video)
-      session[:user_id] = nil
+    context 'GET videos#index' do
+      it_behaves_like 'require_sign_in' do 
+        let(:action) { get :index }
+      end
     end
 
-    it 'GET videos#index' do 
-      get :index
-      expect(response).to redirect_to :sign_in
+    context 'GET videos#show' do 
+      it_behaves_like 'require_sign_in' do 
+        let(:action) { get :show, id: create(:video) }
+      end   
     end
 
-    it 'GET videos#show' do 
-      get :show, id: @video
-      expect(response).to redirect_to :sign_in
+    context 'POST videos#search' do 
+      it_behaves_like 'require_sign_in' do 
+        let(:action) { post :search }
+      end
     end
-
-    it 'POST videos#search' do 
-      post :search
-      expect(response).to redirect_to :sign_in
-    end
-
   end
 end

@@ -3,8 +3,7 @@ require 'spec_helper'
 describe QueueItemsController do 
   context 'authenticated user' do 
     before :each do 
-      @user = create(:registered_user)
-      session[:user_id] = @user.id
+      set_current_user
       video_1 = create(:video)
       video_2 = create(:video)
       @q_item_1 = create(:queue_item, video: video_1, user_id: @user.id, position: 1)
@@ -162,43 +161,35 @@ describe QueueItemsController do
     end
 
     describe 'GET queue_items#index' do
-      before :each do 
+      it 'set flash info message' do
         get :index
-      end
-
-      it 'set flash info message' do 
         expect(flash[:info]).not_to be_blank 
       end
 
-      it 'redirect to sign_in path' do 
-        expect(response).to redirect_to sign_in_path
+      it_behaves_like "require_sign_in" do
+        let(:action) { get :index } 
       end
     end
 
     describe 'POST queue_items#crete' do 
-      before :each do 
-        post :create
-      end
-
-      it 'redirect_to sign in path' do 
-        expect(response).to redirect_to sign_in_path
+      it_behaves_like "require_sign_in" do
+        let(:action) { post :create } 
       end
     end
 
     describe 'DELETE queue_items#destroy' do 
-      it 'redirect to sign in path' do 
-        q = create(:queue_item, video: create(:video), user: create(:user), position: 1)
-        delete :destroy, id: q
-        expect(response).to redirect_to sign_in_path
+      it_behaves_like "require_sign_in" do
+        let(:action) do 
+          q = create(:queue_item, video: create(:video), user: create(:user), position: 1)
+          delete :destroy, id: q 
+        end
       end
     end
 
     describe 'POST update_queue' do
-      it 'redirect to sign_in_path' do 
-        post :update_queue, queue_items: [{id:1, position:2}]
-        expect(response).to redirect_to sign_in_path
+      it_behaves_like "require_sign_in" do
+        let(:action) { post :update_queue, queue_items: [{id:1, position:2}] } 
       end
     end
-
   end
 end
