@@ -38,7 +38,7 @@
                 %p 
                   by 
                   %a(href="") 
-                    = "#{r.user.full_name}"
+                    = link_to r.user.full_name, r.user
                   %br
                   = "at #{r.created_at.strftime("%m/%d/%Y %H:%M:%S")}"
               .span8
