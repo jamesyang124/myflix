@@ -56,4 +56,24 @@ describe UsersController do
       end
     end
   end
+
+  describe 'GET #show' do 
+    it_behaves_like "require_sign_in" do 
+      let(:action) { get :show, id: User.first }
+    end
+
+    it "sets @user" do 
+      set_current_user
+      get :show, id: @user
+      expect(assigns(:user)).to eq(@user)
+    end
+
+    it 'render /users/show template' do
+      set_current_user 
+      get :show, id: @user
+      expect(response).to render_template 'users/show'
+    end
+
+    
+  end 
 end

@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base 
-  has_many :reviews
+  has_many :reviews, -> { order("created_at DESC") }
   has_many :queue_items, -> { order("position ASC") }
+  has_many :following_relationships, class_name: "Relationship", foreign_key: :follower_id
+  has_many :leading_relationships, class_name: "Relationship", foreign_key: :leader_id
 
   has_secure_password validations: false
   
@@ -16,5 +18,13 @@ class User < ActiveRecord::Base
 
   def queued_video?(video)
     queue_items.find_by(video_id: video.id)
+  end
+
+  def follows?(another_user = nil) 
+    following_relationships.map(&:leader).include?(another_user)
+  end
+
+  def can_follows?(another_user)
+    !(self.follows?(another_user) || self == another_user)
   end
 end

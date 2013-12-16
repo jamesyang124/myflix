@@ -5,7 +5,10 @@ Myflix::Application.routes.draw do
   get '/sign_out', to: 'sessions#destroy'
   
   get '/register', to: 'users#new', as: 'register_user'
-  resources 'users', only: [:create]
+  resources 'users', only: [:create, :show]
+
+  get '/people', to: 'relationships#index'
+  resources 'relationships', only: [:create, :destroy]
 
   resources 'categories', only: [:show]
   resources 'videos', only: [:show] do 
