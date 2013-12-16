@@ -8,7 +8,7 @@ Myflix::Application.routes.draw do
   resources 'users', only: [:create, :show]
 
   get '/people', to: 'relationships#index'
-  resources 'relationships', only: [:destroy]
+  resources 'relationships', only: [:create, :destroy]
 
   resources 'categories', only: [:show]
   resources 'videos', only: [:show] do 
