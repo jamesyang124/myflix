@@ -82,6 +82,9 @@ describe RelationshipsController do
 
     it 'does not follow themselves'do 
       set_current_user
+      leader = @user
+      expect{ post :create, leader_id: leader }.not_to change(Relationship, :count)
+      expect(flash[:error]).not_to be_nil
     end
   end
 end
