@@ -55,6 +55,25 @@ describe UsersController do
         expect(response).to redirect_to root_path
       end
     end
+
+    context 'sending emails' do 
+
+      after { ActionMailer::Base.deliveries.clear }
+      
+      it 'sends out the email to the user with valid inputs' do 
+        post :create, user: {email: "none@email.com", password: "123456789", full_name: "None test"}
+        expect(ActionMailer::Base.deliveries.last.to).to eq(['none@email.com'])
+      end
+      it "sends out the email containing the user's name with valid inputs" do 
+        post :create, user: {email: "none@email.com", password: "123456789", full_name: "None test"}
+        expect(ActionMailer::Base.deliveries.last.body).to include("None test")
+      end
+
+      it 'does not send out the email with invalid input' do 
+        post :create, user: {email: "none@email.com"}
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+    end
   end
 
   describe 'GET #show' do 
