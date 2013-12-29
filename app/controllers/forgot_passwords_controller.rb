@@ -1,8 +1,4 @@
 class ForgotPasswordsController < ApplicationController 
-  def new
-    
-  end
-
   def create
     @user = User.where(email: params[:email]).first
     if @user
@@ -12,9 +8,5 @@ class ForgotPasswordsController < ApplicationController
       flash[:error] = params[:email].blank? ? "Email cannot be blank." : "Email input does not exist in system."
       redirect_to forgot_password_path
     end
-  end
-
-   def confirm
-    
   end
 end
