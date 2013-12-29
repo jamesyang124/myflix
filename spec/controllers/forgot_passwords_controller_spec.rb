@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'faker'
 
 describe ForgotPasswordsController do 
   describe "GET forgot_passwords#new" do 
@@ -16,7 +17,7 @@ describe ForgotPasswordsController do
 
       it "should shows the error message" do 
         post :create, email: ''
-        expect(flash[:error]).not_to be_blank
+        expect(flash[:error]).to eq("Email cannot be blank.")
       end
     end
 
@@ -30,14 +31,20 @@ describe ForgotPasswordsController do
       it 'sends out the email to the email address' do 
         user = Fabricate(:user)
         post :create, email: user.email
-        require 'pry';  binding.pry
         expect(ActionMailer::Base.deliveries.last.to).to eq([user.email]) 
 
       end
     end
 
-    context 'fill the non -existing email in database' do 
-
+    context 'fill the non-existing email in database' do 
+      it 'redirects to forgot password page' do
+        post :create, email: Faker::Internet.email
+        expect(response).to redirect_to forgot_password_path
+      end
+      it 'show error message' do 
+        post :create, email: Faker::Internet.email
+        expect(flash[:error]).to eq("Email input does not exist in system.") 
+      end
     end
 
     context "rock reset email to user's email box" do 

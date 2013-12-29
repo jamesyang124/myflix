@@ -4,17 +4,17 @@ class ForgotPasswordsController < ApplicationController
   end
 
   def create
-    user = User.where(email: params[:email]).first
-    if user
-      AppMailers.send_forgot_password(user).deliver
+    @user = User.where(email: params[:email]).first
+    if @user
+      AppMailers.send_forgot_password(@user).deliver
       redirect_to forgot_password_confirmation_path
     else
-      flash[:error] = "Email cannot be blank."
+      flash[:error] = params[:email].blank? ? "Email cannot be blank." : "Email input does not exist in system."
       redirect_to forgot_password_path
     end
   end
 
-  def confirm
+   def confirm
     
   end
 end
