@@ -9,6 +9,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(create_user)
     if @user.save 
+      AppMailers.send_welcome_email(@user).deliver
       redirect_to root_path
     else
       render 'new'
