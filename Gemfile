@@ -21,7 +21,6 @@ group :development, :test do
   gem 'binding_of_caller'
   gem 'meta_request'
   gem 'fabrication'
-  gem 'capybara-email'
 end
 
 group :development do 
@@ -32,8 +31,9 @@ group :test do
   gem 'shoulda-matchers', '~> 2.4.0'
   gem 'factory_girl_rails', '~> 4.3.0'
   gem "faker", '~> 1.2.0'
-  gem 'capybara' 
+  gem 'capybara', "~> 2.1.0"
   gem 'launchy'
+  gem 'capybara-email', '~> 2.2.0'
 end
 
 group :production do
