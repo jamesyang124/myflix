@@ -21,6 +21,7 @@ group :development, :test do
   gem 'binding_of_caller'
   gem 'meta_request'
   gem 'fabrication'
+  gem 'capybara-email'
 end
 
 group :development do 
