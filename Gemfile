@@ -4,6 +4,7 @@ gem 'rails', '4.0.0'
 gem 'haml-rails'
 gem 'bootstrap-sass', '~> 2.2.1.0'
 gem 'bcrypt-ruby', '3.0.1'
+gem 'bootstrap_form', "~> 1.0.0"
 gem 'simple_form'
 
 group :assets do
