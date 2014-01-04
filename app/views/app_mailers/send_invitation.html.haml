@@ -1,0 +1,9 @@
+!!! 5
+%html(lang="en-US")
+  %body
+    %p= "Dear #{@invitation.recipient_name},"
+    %p= "#{@invitation.inviter.full_name} wants to invite you for trying mylfix!"
+    %p He/She also brings you a message:
+    %p= "#{@invitation.message}."
+    %p Please click on the link below to register a new account for myflix:
+    %p= link_to 'Register for myflix', register_user_url

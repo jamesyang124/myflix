@@ -2,12 +2,6 @@ require 'spec_helper'
 require 'faker'
 
 describe ForgotPasswordsController do 
-  describe "GET forgot_passwords#new" do 
-    it 'logged-in user cannot visit this page' do 
-
-    end
-  end
-
   describe "POST forgot_passwords#create" do 
     context "fill the blank input" do 
       it "redirects to forgot_passwords#new page" do 
@@ -45,10 +39,6 @@ describe ForgotPasswordsController do
         post :create, email: Faker::Internet.email
         expect(flash[:error]).to eq("Email input does not exist in system.") 
       end
-    end
-
-    context "rock reset email to user's email box" do 
-
     end
   end
 

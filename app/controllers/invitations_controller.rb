@@ -6,10 +6,11 @@ class InvitationsController < ApplicationController
   end
 
   def create
-    invitation = Invitation.new(invitation_params.merge!(inviter_id: current_user.id))
-    if invitation.save 
-      flash[:sucess] = "Your invitation has been sent!"
-      redirect_to home_path
+    @invitation = Invitation.new(invitation_params.merge!(inviter_id: current_user.id))
+    if @invitation.save 
+      AppMailers.send_invitation(@invitation).deliver
+      flash[:success] = "Your invitation for #{@invitation.recipient_name} has been sent!"
+      redirect_to new_invitation_path
     else 
       flash.now[:error] = "Your invitation request has been failed, please check and try again later."
       render :new
