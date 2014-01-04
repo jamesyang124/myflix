@@ -12,4 +12,4 @@
           = f.label :message, "Invitation Message"
           = f.text_area :message, placeholder: "Please join this really cool site!", class: "span4", rows: 6
         %fieldset.action
-          %input(type="submit" value="Send Invitation" class="btn")
+          = f.submit "Send Invitation", class: "btn"
