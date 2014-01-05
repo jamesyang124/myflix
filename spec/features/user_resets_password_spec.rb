@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 feature 'User resets password' do 
+  after{ ActionMailer::Base.deliveries.clear }
   scenario 'user successfully resets password' do 
     user = Fabricate(:user, password: "old_password")
 
@@ -54,6 +55,5 @@ feature 'User resets password' do
     open_email(user.email)
     current_email.click_link 'Reset My Password'
     expect(page).to have_content("Your link is expired.")
-
   end
 end
