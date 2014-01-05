@@ -6,6 +6,7 @@ Myflix::Application.routes.draw do
   
   get '/register', to: 'users#new', as: 'register_user'
   resources 'users', only: [:create, :show]
+  get '/register/:token', to: "users#new_with_invitation_token", as: 'register_with_token'
 
   get '/people', to: 'relationships#index'
   resources 'relationships', only: [:create, :destroy]
@@ -27,6 +28,7 @@ Myflix::Application.routes.draw do
   get 'expired_token', to: "password_resets#expired_token"
 
   resources 'invitations', only: [:new, :create]
+
 
   resources 'queue_items', only: [:index, :create, :destroy], path: 'my_queue'
   post 'update_queue', to: 'queue_items#update_queue'

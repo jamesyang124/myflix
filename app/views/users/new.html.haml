@@ -50,6 +50,7 @@
                 - if @user.errors.include?(:password_confirmation)
                   %span.help-inline 
                     =@user.errors.full_messages_for(:password_confirmation).first
+            = hidden_field_tag :invitation_token, @invitation_token
           %fieldset.actions.control-group
             .controls
               =f.submit 'Sign Up', class: "btn btn-success"
