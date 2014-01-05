@@ -86,7 +86,7 @@ describe InvitationsController do
 
       it 'sets flash error message' do 
         invalid_invitation
-        expect(flash.now[:error]).to eq("Your invitation request has been failed, please check and try again later.")
+        expect(flash.now[:error]).to be_present
       end
 
     end

@@ -53,7 +53,7 @@ feature 'User resets password' do
 
     open_email(user.email)
     current_email.click_link 'Reset My Password'
-    expect(page).to have_content("Your reset password link is expired.")
+    expect(page).to have_content("Your link is expired.")
 
   end
 end
