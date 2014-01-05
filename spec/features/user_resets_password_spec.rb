@@ -24,6 +24,7 @@ feature 'User resets password' do
     expect(page).to have_content "Welcome, #{user.full_name}"
     expect(find("div#flash_notice").text).to eq("You have signed in! Enjoy!")
 
+    clear_email
   end
 
   scenario 'user input non-existed email' do 
@@ -55,5 +56,7 @@ feature 'User resets password' do
     open_email(user.email)
     current_email.click_link 'Reset My Password'
     expect(page).to have_content("Your link is expired.")
+
+    clear_email
   end
 end
