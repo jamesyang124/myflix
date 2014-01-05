@@ -9,11 +9,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(create_user)
     if @user.save 
-      if invitation = Invitation.find_by(token: params[:invitation_token])
-        Relationship.create(follower: invitation.inviter, leader: @user)
-        Relationship.create(follower: @user, leader: invitation.inviter)
-        Invitation.find(invitation).destroy
-      end
+      handle_invitation(@user)
       AppMailers.send_welcome_email(@user).deliver
       redirect_to root_path
     else
@@ -40,5 +36,13 @@ class UsersController < ApplicationController
 
   def create_user
     params.require(:user).permit(:full_name, :password, :email, :password_confirmation)
+  end
+
+  def handle_invitation(user)
+    if invitation = Invitation.find_by(token: params[:invitation_token])
+      user.follow(invitation.inviter)
+      invitation.inviter.follow(user)
+      invitation.update_column(:token, nil)
+    end
   end
 end

@@ -6,6 +6,7 @@ gem 'bootstrap-sass', '~> 2.2.1.0'
 gem 'bcrypt-ruby', '3.0.1'
 gem 'bootstrap_form', "~> 1.0.0"
 gem 'simple_form'
+gem 'simplecov', :require => false, :group => :test
 
 group :assets do
   gem 'sass-rails',   '~> 4.0.0'
@@ -22,6 +23,7 @@ group :development, :test do
   gem 'binding_of_caller'
   gem 'meta_request'
   gem 'fabrication'
+
 end
 
 group :development do 

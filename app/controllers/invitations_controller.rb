@@ -12,7 +12,7 @@ class InvitationsController < ApplicationController
       flash[:success] = "Your invitation for #{@invitation.recipient_name} has been sent!"
       redirect_to new_invitation_path
     else 
-      flash.now[:error] = "Your invitation request has been failed, please check and try again later."
+      flash.now[:error] = "Your invitation has been failed to sent for, please check and try again later."
       render :new
     end 
   end
