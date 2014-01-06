@@ -1,5 +1,7 @@
 class CreateReviewsAgain < ActiveRecord::Migration
   def change
+    drop_table :reviews
+
     create_table :reviews do |t|
       t.decimal :rating, precision: 2, scale: 1
       t.text :content
