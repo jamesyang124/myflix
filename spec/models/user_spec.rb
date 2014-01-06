@@ -9,9 +9,8 @@ describe User do
   it { should have_secure_password }
   it { should have_many(:queue_items).order("position ASC") }
 
-  it 'generate a random token when the user is created' do 
-    token_user = Fabricate(:user)
-    expect(token_user.token).to be_present
+  it_behaves_like "tokenable" do 
+    let(:object) { Fabricate(:user) }
   end
 
   describe '#queued_video?' do 
