@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Category do
   describe 'test Validation & Association & Saves' do
     before :each do 
-      @crime_scene = Category.create(name: 'Crime Scene')
+      @crime_scene = Category.create(name: 'Crime Scene III')
       @test_video1 = Video.create(title: 'video1', description: 'desc1', category: @crime_scene)  
       @test_video2 = Video.create(title: 'video2', description: 'desc2', category: @crime_scene)  
     end 

@@ -1,7 +1,7 @@
 %section.register.container
   .row
     .span10.offset1
-      =bootstrap_form_for @user  do |f|
+      =simple_customed_form_for @user do |f|
         %header
           %h1 Register
           = render 'errors', object: @user
@@ -50,6 +50,7 @@
                 - if @user.errors.include?(:password_confirmation)
                   %span.help-inline 
                     =@user.errors.full_messages_for(:password_confirmation).first
+            = hidden_field_tag :invitation_token, @invitation_token
           %fieldset.actions.control-group
             .controls
               =f.submit 'Sign Up', class: "btn btn-success"

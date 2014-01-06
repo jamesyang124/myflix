@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   validates_presence_of :full_name, :email, :password
   validates_uniqueness_of :email
 
-  before_create :generate_token
+  include Tokenable
 
   def normalize_queue_items_position
     reload.queue_items.sort_by!(&:position).each_with_index do |item, index|
@@ -22,6 +22,11 @@ class User < ActiveRecord::Base
     queue_items.find_by(video_id: video.id)
   end
 
+  def follow(another_user) 
+    self.following_relationships.create(leader: another_user) if self.can_follows?(another_user) && another_user != nil
+  end
+
+
   def follows?(another_user = nil) 
     following_relationships.map(&:leader).include?(another_user)
   end
@@ -30,7 +35,4 @@ class User < ActiveRecord::Base
     !(self.follows?(another_user) || self == another_user)
   end
   
-  def generate_token
-    self.token = SecureRandom.urlsafe_base64   
-  end
 end
