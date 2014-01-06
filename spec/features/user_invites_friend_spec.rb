@@ -20,7 +20,7 @@ feature 'User invites friend' do
 
     inviter_follow_friend(user, recipient_name)
 
-    clear_email
+    clear_emails
   end
 
 
