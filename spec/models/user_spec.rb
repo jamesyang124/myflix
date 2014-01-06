@@ -9,9 +9,8 @@ describe User do
   it { should have_secure_password }
   it { should have_many(:queue_items).order("position ASC") }
 
-  it 'generate a random token when the user is created' do 
-    token_user = Fabricate(:user)
-    expect(token_user.token).to be_present
+  it_behaves_like "tokenable" do 
+    let(:object) { Fabricate(:user) }
   end
 
   describe '#queued_video?' do 
@@ -47,6 +46,35 @@ describe User do
     it 'return false if the user followed themselves' do 
       follower = create(:user)
       expect(follower.follows?(follower)).to be_false
+    end
+  end
+
+  describe "#follow" do
+    it "return a new relationship that follows another user" do
+      follower = create(:user)
+      leader = create(:user)
+      expect(follower.follow(leader)).to be_instance_of(Relationship)
+      expect(follower.follows?(leader)).to be_true
+    end
+
+    it 'returns nil if anothr user not exist' do 
+      follower = create(:user)
+      expect(follower.follow(nil)).to be_nil
+    end 
+
+    it 'returns nil if it has existed in relationships table' do 
+      follower = create(:user)
+      leader = create(:user)
+      relationship = follower.follow(leader)
+      relationship_again = follower.follow(leader)
+
+      expect(relationship_again).to be_nil
+    end
+
+    it 'returns nil if another user is self' do 
+      follower = create(:user)
+      leader = follower
+      expect(follower.follow(leader)).to be_nil
     end
   end
 end

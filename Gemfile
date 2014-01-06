@@ -1,10 +1,15 @@
 source 'https://rubygems.org'
 
+ruby '2.0.0'
+
 gem 'rails', '4.0.0'
 gem 'haml-rails'
 gem 'bootstrap-sass', '~> 2.2.1.0'
 gem 'bcrypt-ruby', '3.0.1'
+gem 'bootstrap_form', "~> 1.0.0"
 gem 'simple_form'
+gem 'simplecov', :require => false, :group => :test
+
 
 group :assets do
   gem 'sass-rails',   '~> 4.0.0'
@@ -21,6 +26,7 @@ group :development, :test do
   gem 'binding_of_caller'
   gem 'meta_request'
   gem 'fabrication'
+
 end
 
 group :development do 
@@ -31,12 +37,14 @@ group :test do
   gem 'shoulda-matchers', '~> 2.4.0'
   gem 'factory_girl_rails', '~> 4.3.0'
   gem "faker", '~> 1.2.0'
-  gem 'capybara' 
+  gem 'capybara', "~> 2.1.0"
   gem 'launchy'
+  gem 'capybara-email', '~> 2.2.0'
 end
 
 group :production do
   gem 'pg'
+  gem 'rails_12factor'
 end
 
 gem 'jquery-rails'

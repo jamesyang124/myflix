@@ -79,10 +79,10 @@ describe Video do
   end
 
   it 'should return matched array with order' do 
-    crime_scene = Category.create(name: 'Crime Scene')
-    v1 = Video.create(title: 'video1', description: 'desc1', category: crime_scene, created_at: 1.day.ago)
-    v2 = Video.create(title: 'video2', description: 'desc2', category: crime_scene)
-    expect(Video.search_by_title('video')).to eq([v2,v1])
+    crime_scene = Category.create(name: 'Crime Scene II')
+    v1 = Video.create(title: 'veo1', description: 'desc1', category: crime_scene, created_at: 1.day.ago)
+    v2 = Video.create(title: 'veo2', description: 'desc2', category: crime_scene)
+    expect(Video.search_by_title('veo').first(2)).to eq([v2,v1])
   end
 
   context 'has many commments' do 
@@ -94,4 +94,22 @@ describe Video do
       expect(video.reviews_total_rate).to eq(video.reviews_total_rate) 
     end
   end
+
+  it "search by title_categorized" do 
+    crime_scene = Category.create(name: 'Crime Scenes')
+    v1 = Video.create(title: 'video1', description: 'desc1', category: crime_scene, created_at: 1.day.ago)
+    v2 = Video.create(title: 'video2', description: 'desc2', category: crime_scene)
+    
+    expect(Video.search_by_title_categorized('video')).not_to be_empty 
+  end
+
+  it "check SearchResult categories" do
+    videos = Video.search_by_title('video')
+    result = videos.reduce(SearchResult.new) do |result, video|
+              result.add_videos(video)
+              result
+            end
+    expect([result.categories]).to include(Video.search_by_title_categorized('video').keys)
+  end
+
 end
