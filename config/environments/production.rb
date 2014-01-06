@@ -78,9 +78,9 @@ Myflix::Application.configure do
      :authentication => :plain,
      :address => "smtp.mailgun.org",
      :port => 587,
-     :domain => "app21009972.mailgun.org",
-     :user_name => "postmaster@app21009972.mailgun.org",
-     :password => "44zxz6vjdyr1"
+     :domain => "app21010649.mailgun.org",
+     :user_name => "postmaster@app21010649.mailgun.org",
+     :password => "97khuixyqk51"
   }
 
 end
