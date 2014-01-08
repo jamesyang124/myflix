@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Myflix::Application.routes.draw do
   get '/home', controller: 'videos', action: 'index'
   get '/sign_in', to: 'sessions#new'
@@ -35,4 +37,6 @@ Myflix::Application.routes.draw do
 
   root to: 'pages#front'
   get 'ui(/:action)', controller: 'ui'
+
+  mount Sidekiq::Web, at: "/sidekiq"
 end

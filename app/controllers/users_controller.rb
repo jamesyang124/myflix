@@ -10,7 +10,7 @@ class UsersController < ApplicationController
     @user = User.new(create_user)
     if @user.save 
       handle_invitation(@user)
-      AppMailers.send_welcome_email(@user).deliver
+      SendWelcomesWorker.delay.perform_async(@user.id)
       redirect_to root_path
     else
       render 'new'

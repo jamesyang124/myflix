@@ -4,11 +4,13 @@ ruby '2.0.0'
 
 gem 'rails', '4.0.0'
 gem 'haml-rails'
-gem 'bootstrap-sass', '~> 2.2.1.0'
+gem 'bootstrap-sass', '~> 2.2.2.0'
 gem 'bcrypt-ruby', '3.0.1'
 gem 'bootstrap_form', "~> 1.0.0"
 gem 'simple_form'
 gem 'simplecov', :require => false, :group => :test
+gem 'sidekiq'
+
 
 
 group :assets do
@@ -26,7 +28,10 @@ group :development, :test do
   gem 'binding_of_caller'
   gem 'meta_request'
   gem 'fabrication'
-
+  
+  # for Sidekiq web UI
+  gem 'sinatra', require: false
+  gem 'slim'
 end
 
 group :development do 
