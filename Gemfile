@@ -12,6 +12,9 @@ gem 'simplecov', :require => false, :group => :test
 gem 'sidekiq'
 gem 'unicorn'
 
+# for Sidekiq web UI
+gem 'sinatra', require: false
+gem 'slim'
 
 group :assets do
   gem 'sass-rails',   '~> 4.0.0'
@@ -29,9 +32,7 @@ group :development, :test do
   gem 'meta_request'
   gem 'fabrication'
   
-  # for Sidekiq web UI
-  gem 'sinatra', require: false
-  gem 'slim'
+
 end
 
 group :development do 
