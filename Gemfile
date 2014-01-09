@@ -10,7 +10,7 @@ gem 'bootstrap_form', "~> 1.0.0"
 gem 'simple_form'
 gem 'simplecov', :require => false, :group => :test
 gem 'sidekiq'
-
+gem 'unicorn'
 
 
 group :assets do
