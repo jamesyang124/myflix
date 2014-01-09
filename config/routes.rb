@@ -1,4 +1,4 @@
-require 'sidekiq/web'
+require 'sidekiq/web' unless Rails.env == "production"
 
 Myflix::Application.routes.draw do
   get '/home', controller: 'videos', action: 'index'
@@ -38,5 +38,5 @@ Myflix::Application.routes.draw do
   root to: 'pages#front'
   get 'ui(/:action)', controller: 'ui'
 
-  mount Sidekiq::Web, at: "/sidekiq"
+  mount Sidekiq::Web, at: "/sidekiq" unless Rails.env == "production"
 end
