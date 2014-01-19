@@ -11,6 +11,8 @@ gem 'simple_form'
 gem 'simplecov', :require => false, :group => :test
 gem 'sidekiq'
 gem 'unicorn'
+gem 'rake', "~> 10.1.1"
+gem 'minitest', '~> 4.7.5'
 
 group :assets do
   gem 'sass-rails',   '~> 4.0.0'
