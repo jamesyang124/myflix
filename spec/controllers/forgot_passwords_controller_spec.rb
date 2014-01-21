@@ -3,6 +3,8 @@ require 'faker'
 
 describe ForgotPasswordsController do 
   describe "POST forgot_passwords#create" do 
+    after { ActionMailer::Base.deliveries.clear }
+
     context "fill the blank input" do 
       it "redirects to forgot_passwords#new page" do 
         post :create, email: ''

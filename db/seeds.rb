@@ -36,7 +36,7 @@
 #  end
 #end 
 
-['mod4', Rails.env].each do |seed| 
+['mod11', Rails.env].each do |seed| 
   seed_file = "#{Rails.root}/db/seeds/#{seed}.rb"
   if File.exists?(seed_file)
     puts "Loading #{seed} files"

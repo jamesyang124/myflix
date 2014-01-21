@@ -45,7 +45,8 @@ describe UsersController do
 
     describe 'save successful then' do 
       let(:valid_post) { post :create, user: attributes_for(:user) }
-      
+      after { ActionMailer::Base.deliveries.clear }
+
       it 'store valid data' do
         expect{ valid_post }.to change(User, :count).by(1) 
       end
