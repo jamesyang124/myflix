@@ -15,7 +15,9 @@ gem 'rake', "~> 10.1.1"
 gem 'minitest', '~> 4.7.5'
 gem 'carrierwave'
 gem 'mini_magick'
-
+gem 'figaro'
+gem 'stripe'
+gem 'fog'
 
 group :assets do
   gem 'sass-rails',   '~> 4.0.0'
