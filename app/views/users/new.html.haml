@@ -53,5 +53,5 @@
             = hidden_field_tag :invitation_token, @invitation_token
           %fieldset.actions.control-group
             .controls
-              =f.submit 'Sign Up', class: "btn btn-success"
+              <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="#{ENV['STRIPE_PUBLISHABLE_KEY']}" data-amount="999" data-name="Myflix-jy124" data-description="$9.99 to sign up the Myflix service." data-currency="usd"> </script>
               = link_to "Forgot Password?", forgot_password_path 
