@@ -268,13 +268,11 @@ DEPENDENCIES
   letter_opener
   meta_request
   mini_magick
-  minitest (~> 4.7.5)
   pg
   pry
   pry-nav
   rails (= 4.0.0)
   rails_12factor
-  rake (~> 10.1.0)
   rspec-rails (~> 2.14.0)
   sass-rails (~> 4.0.0)
   shoulda-matchers (~> 2.4.0)
