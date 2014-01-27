@@ -11,13 +11,12 @@ gem 'simple_form'
 gem 'simplecov', :require => false, :group => :test
 gem 'sidekiq'
 gem 'unicorn'
-gem 'rake', "~> 10.1.0"
-gem 'minitest', '~> 4.7.5'
 gem 'carrierwave'
 gem 'mini_magick'
 gem 'figaro'
 gem 'stripe'
 gem 'fog'
+gem 'pg'
 
 group :assets do
   gem 'sass-rails',   '~> 4.0.0'
@@ -26,7 +25,6 @@ group :assets do
 end
 
 group :development, :test do
-  gem 'pg'
   gem 'pry'
   gem 'pry-nav'
   gem 'rspec-rails', '~> 2.14.0'
@@ -54,7 +52,6 @@ group :test do
 end
 
 group :production do
-  gem 'pg'
   gem 'rails_12factor'
 end
 
