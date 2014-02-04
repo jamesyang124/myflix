@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'faker'
 
 feature 'User invites friend' do 
-  scenario 'user successfully invites a friend and invitaion is accepted' do 
+  scenario 'user successfully invites a friend and invitaion is accepted', { js: true, vcr: true }do 
 
     user = Fabricate(:user)
     sign_in(user)
@@ -45,6 +45,12 @@ feature 'User invites friend' do
     fill_in "user_full_name", with: recipient_name
     fill_in "user_password", with: "123456789"
     fill_in "user_password_confirmation", with: "123456789"
+
+    fill_in "Credit Card Number", with: "4242424242424242"
+    fill_in "Security Code", with: "314"
+    find("#date_month").find("option[value='1']")
+    select "2015", from: "date_year"
+
     click_button "Sign Up"
 
     expect(page).to have_content "Sign In"

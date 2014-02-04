@@ -28,7 +28,7 @@ describe Category do
 
   describe 'test Cateogry#recent_videos' do
     before :each do 
-      @category = Category.first
+      @category = Fabricate.create(:category)
       2.times { |_| create(:video, category: @category) }
     end
 

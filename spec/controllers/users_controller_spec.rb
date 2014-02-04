@@ -16,6 +16,10 @@ describe UsersController do
 
   context 'POST User#create' do
     describe 'save failed then' do 
+      before :each do 
+        Stripe::Charge.stub(:create)
+      end
+
       let(:invalid_name_post) { post :create, user: attributes_for(:invalid_name) }
       let(:invalid_email_post) { post :create, user: attributes_for(:invalid_email) }
       let(:invalid_password_post) { post :create, user: attributes_for(:invalid_password) }
@@ -46,6 +50,9 @@ describe UsersController do
     describe 'save successful then' do 
       let(:valid_post) { post :create, user: attributes_for(:user) }
       after { ActionMailer::Base.deliveries.clear }
+      before :each do 
+        Stripe::Charge.stub(:create)
+      end
 
       it 'store valid data' do
         expect{ valid_post }.to change(User, :count).by(1) 
@@ -87,7 +94,7 @@ describe UsersController do
     end
 
     context 'sending emails' do 
-
+      before { Stripe::Charge.stub(:create) }      
       after { ActionMailer::Base.deliveries.clear }
       
       it 'sends out the email to the user with valid inputs' do 
@@ -108,7 +115,8 @@ describe UsersController do
 
   describe 'GET #show' do 
     it_behaves_like "require_sign_in" do 
-      let(:action) { get :show, id: User.first }
+      user = Fabricate.create(:user)
+      let(:action) { get :show, id: user.id }
     end
 
     it "sets @user" do 
