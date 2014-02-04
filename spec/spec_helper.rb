@@ -1,5 +1,5 @@
-require 'simplecov'
-SimpleCov.start 'rails'
+#require 'simplecov'
+#SimpleCov.start 'rails'
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
@@ -18,6 +18,14 @@ Sidekiq::Testing.inline!
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+
+
+require 'vcr'
+VCR.configure do |c|
+  c.cassette_library_dir = 'spec/cassettes'
+  c.hook_into :webmock
+  c.configure_rspec_metadata!
+end
 
 RSpec.configure do |config|
   # ## Mock Framework
@@ -50,4 +58,7 @@ RSpec.configure do |config|
   # Include Factory Girl syntax to simplify calls to factories 
   config.include FactoryGirl::Syntax::Methods
 
+  # so we can use :vcr rather than :vcr => true;
+  # in RSpec 3 this will no longer be necessary.
+  config.treat_symbols_as_metadata_keys_with_true_values = true
 end

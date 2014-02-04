@@ -18,6 +18,7 @@ gem 'stripe'
 gem 'fog'
 gem 'pg'
 
+
 group :assets do
   gem 'sass-rails',   '~> 4.0.0'
   gem 'coffee-rails', '~> 4.0.0'
@@ -49,6 +50,8 @@ group :test do
   gem 'capybara', "~> 2.1.0"
   gem 'launchy'
   gem 'capybara-email', '~> 2.2.0'
+  gem 'vcr'
+  gem 'webmock', '~> 1.15.2'
 end
 
 group :production do
