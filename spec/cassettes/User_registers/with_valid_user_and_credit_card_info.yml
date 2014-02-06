@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.stripe.com/v1/charges
     body:
       encoding: US-ASCII
-      string: amount=999&card=tok_103Rmd225BGP9bWC2NXOzRAs&currency=usd&description=Sign%20up%20charge%20for%20madison%40hayes.name.
+      string: amount=999&card=tok_103RmR225BGP9bWCC6LDQS8b&currency=usd&description=Sign%20up%20charge%20for%20John%40example.com.
     headers:
       Accept:
       - '*/*; q=0.5, application/xml'
@@ -22,7 +22,7 @@ http_interactions:
         MacBook-Air.local 13.0.0 Darwin Kernel Version 13.0.0: Thu Sep 19 22:22:27
         PDT 2013; root:xnu-2422.1.72~6/RELEASE_X86_64 x86_64"}'
       Content-Length:
-      - '118'
+      - '116'
   response:
     status:
       code: 200
@@ -31,37 +31,37 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 06 Feb 2014 14:23:32 GMT
+      - Thu, 06 Feb 2014 14:11:41 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
-      - '1003'
+      - '1001'
       Connection:
       - keep-alive
       Access-Control-Allow-Methods:
       - GET, POST, HEAD, OPTIONS, DELETE
-      Access-Control-Max-Age:
-      - '300'
-      Access-Control-Allow-Credentials:
-      - 'true'
       Cache-Control:
       - no-cache, no-store
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Max-Age:
+      - '300'
       Strict-Transport-Security:
       - max-age=31556926; includeSubDomains
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "ch_103Rmd225BGP9bWCevGWMpOq",
+          "id": "ch_103RmR225BGP9bWCbHOjK7vh",
           "object": "charge",
-          "created": 1391696612,
+          "created": 1391695901,
           "livemode": false,
           "paid": true,
           "amount": 999,
           "currency": "usd",
           "refunded": false,
           "card": {
-            "id": "card_103Rmd225BGP9bWCKtbjwDKV",
+            "id": "card_103RmR225BGP9bWCZSviAiaz",
             "object": "card",
             "last4": "4242",
             "type": "Visa",
@@ -83,16 +83,16 @@ http_interactions:
           },
           "captured": true,
           "refunds": [],
-          "balance_transaction": "txn_103Rmd225BGP9bWCW8f3aYxR",
+          "balance_transaction": "txn_103RmR225BGP9bWCQ9aq45m0",
           "failure_message": null,
           "failure_code": null,
           "amount_refunded": 0,
           "customer": null,
           "invoice": null,
-          "description": "Sign up charge for madison@hayes.name.",
+          "description": "Sign up charge for John@example.com.",
           "dispute": null,
           "metadata": {}
         }
     http_version: 
-  recorded_at: Thu, 06 Feb 2014 14:23:35 GMT
+  recorded_at: Thu, 06 Feb 2014 14:11:41 GMT
 recorded_with: VCR 2.8.0

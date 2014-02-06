@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'faker'
 
 feature 'User invites friend' do 
-  scenario 'user successfully invites a friend and invitaion is accepted', { js: true, vcr: true }do 
+  scenario 'user successfully invites a friend and invitaion is accepted', { js: true, vcr: true } do 
 
     user = Fabricate(:user)
     sign_in(user)

@@ -22,13 +22,15 @@ class UsersController < ApplicationController
         @user.save
         handle_invitation(@user)
         AppMailersWorker.delay.perform_async(@user.id, @user.class.to_s, :send_welcome_email)
+        flash[:success] = "Thank you for your payment for Myflix."
         redirect_to root_path
       else
         flash.now[:error] = charge.error_message
-        render 'new'
+        render :new
       end
     else
-      render 'new'
+      flash.now[:error] = "Invalid user information, please fill in again."
+      render :new
     end
   end
 
