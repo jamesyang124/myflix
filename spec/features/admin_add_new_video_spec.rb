@@ -2,6 +2,7 @@ require 'spec_helper'
 
 feature "Admin add new video" do 
   scenario "admin successfully ad new video" do 
+    Fabricate.create(:category, name: "Dramas")
     admin = Fabricate(:admin)
     sign_in admin
   

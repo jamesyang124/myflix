@@ -134,7 +134,7 @@ describe QueueItemsController do
         it 'unchange all queue items' do 
           expect{ invalid_post }.not_to change(QueueItem, :count)
           invalid_post
-          expect(@q_item_1.reload.position).to eq(1)
+          expect(@q_item_1.reload.position).to eq(5)
           expect(@q_item_2.reload.position).to eq(2)
         end
 
