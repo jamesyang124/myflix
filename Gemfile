@@ -17,7 +17,7 @@ gem 'figaro'
 gem 'stripe'
 gem 'fog'
 gem 'pg'
-
+gem 'draper'
 
 group :assets do
   gem 'sass-rails',   '~> 4.0.0'
