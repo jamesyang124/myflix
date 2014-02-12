@@ -15,7 +15,11 @@ describe UsersController do
   end
 
   context 'POST User#create' do
-    describe 'save failed then' do 
+    describe 'save failed with invalid personal info then' do 
+      before :each do 
+        Stripe::Charge.stub(:create)
+      end
+
       let(:invalid_name_post) { post :create, user: attributes_for(:invalid_name) }
       let(:invalid_email_post) { post :create, user: attributes_for(:invalid_email) }
       let(:invalid_password_post) { post :create, user: attributes_for(:invalid_password) }
@@ -41,11 +45,57 @@ describe UsersController do
         }.to_not change(User, :count) 
         expect(response).to render_template :new
       end
+
+      it 'should not charge credit card' do
+        invalid_email_post
+        StripeWrapper::Charge.should_not_receive(:create)
+      end
     end
 
-    describe 'save successful then' do 
-      let(:valid_post) { post :create, user: attributes_for(:user) }
+    describe 'save failed with valid personal info and decliend credit card' do 
+      let(:valid_post) { post :create, user: attributes_for(:user), stripeToken: "1231241" }
+
+
+      it 'does not create a new user' do
+        charge = double(:charge, successful?: false, error_message: "Your card was declined.")
+        StripeWrapper::Charge.should_receive(:create).and_return(charge)
+        valid_post 
+
+        expect(User.count).to eq(0)
+      end
+
+      it "renders :new template" do 
+        charge = double(:charge, successful?: false, error_message: "Your card was declined.")
+        StripeWrapper::Charge.should_receive(:create).and_return(charge)
+        valid_post 
+
+        expect(response).to render_template :new      
+      end
+
+      it 'set @user' do 
+        charge = double(:charge, successful?: false, error_message: "Your card was declined.")
+        StripeWrapper::Charge.should_receive(:create).and_return(charge)
+        valid_post
+
+        expect(assigns(:user)).to be_present 
+      end
+
+      it 'sets flash error message' do 
+        charge = double(:charge, successful?: false, error_message: "Your card was declined.")
+        StripeWrapper::Charge.should_receive(:create).and_return(charge)
+        valid_post
+
+        expect(flash.now[:error]).to be_present 
+      end
+    end
+
+    describe 'save successful with valid personal and card information then' do 
+      let(:valid_post) { post :create, user: attributes_for(:user)}
       after { ActionMailer::Base.deliveries.clear }
+      before :each do 
+        charge = double(:charge, successful?: true)
+        Stripe::Charge.should_receive(:create).and_return(charge)
+      end
 
       it 'store valid data' do
         expect{ valid_post }.to change(User, :count).by(1) 
@@ -87,6 +137,10 @@ describe UsersController do
     end
 
     context 'sending emails' do 
+      before(:each) do
+        charge = double(:charge, successful?: true)
+        Stripe::Charge.stub(:create).and_return(charge)
+      end
 
       after { ActionMailer::Base.deliveries.clear }
       
@@ -108,7 +162,8 @@ describe UsersController do
 
   describe 'GET #show' do 
     it_behaves_like "require_sign_in" do 
-      let(:action) { get :show, id: User.first }
+      user = Fabricate.create(:user)
+      let(:action) { get :show, id: user.id }
     end
 
     it "sets @user" do 

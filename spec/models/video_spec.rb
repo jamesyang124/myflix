@@ -58,6 +58,17 @@ describe Video do
   end
 
   it "should return empty array when search with special query character '_' , '!', or '%'" do 
+    com = Category.create(name: 'Comedies')
+    Video.create(
+      title: 'Inception',
+      category: com,
+      description: "Dom Cobb is a skilled thief, the absolute best in the dangerous art of extraction, stealing valuable secrets from deep within the subconscious during the dream state, when the mind is at its most vulnerable An enemy that only Cobb could have seen coming."
+    )
+    Video.create(
+      title: 'Lincoln',
+      category: com,
+      description: "Director Steven Spielberg takes on the towering legacy of Abraham Lincoln, focusing on his stewardship of the Union during the Civil War years. The biographical saga also reveals the conflicts within Lincoln's cabinet regarding the war and abolition."
+    )
     expect(Video.search_by_title('%')).to be_empty
     expect(Video.search_by_title('_')).to be_empty
     expect(Video.search_by_title('Inc_ption')).to be_empty
@@ -66,6 +77,18 @@ describe Video do
   end
 
   it 'should return partial matched array when search with exact string' do 
+    com = Category.create(name: 'Comedies')
+    Video.create(
+      title: 'Inception',
+      category: com,
+      description: "Dom Cobb is a skilled thief, the absolute best in the dangerous art of extraction, stealing valuable secrets from deep within the subconscious during the dream state, when the mind is at its most vulnerable An enemy that only Cobb could have seen coming."
+    )
+    Video.create(
+      title: 'Lincoln',
+      category: com,
+      description: "Director Steven Spielberg takes on the towering legacy of Abraham Lincoln, focusing on his stewardship of the Union during the Civil War years. The biographical saga also reveals the conflicts within Lincoln's cabinet regarding the war and abolition."
+    )
+
     inception = Video.find_by(title: "Inception")
     lincoln = Video.find_by(title: "Lincoln")
     expect(Video.search_by_title('Inception')).to include(inception)
@@ -86,11 +109,15 @@ describe Video do
   end
 
   context 'has many commments' do 
-    let(:reviews) { 6.times { create(:review) } }
-
     it 'get average rating' do 
-      reviews
-      video = Video.first
+      com = Category.create(name: 'Comedies')
+      video = Video.create(
+        title: 'Inception',
+        category: com,
+        description: "Dom Cobb is a skilled thief, the absolute best in the dangerous art of extraction, stealing valuable secrets from deep within the subconscious during the dream state, when the mind is at its most vulnerable An enemy that only Cobb could have seen coming."
+      )
+      6.times { create(:review, video_id: video.id) }
+
       expect(video.reviews_total_rate).to eq(video.reviews_total_rate) 
     end
   end
