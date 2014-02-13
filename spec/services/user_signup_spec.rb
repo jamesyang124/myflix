@@ -8,8 +8,8 @@ describe UserSignup do
       after { ActionMailer::Base.deliveries.clear }
       
       before :each do 
-        charge = double(:charge, successful?: true)
-        Stripe::Charge.should_receive(:create).and_return(charge)
+        customer = double(:subscription_charge, successful?: true)
+        StripeWrapper::Customer.should_receive(:create).and_return(customer)
       end
 
       it 'store valid data' do
@@ -63,14 +63,12 @@ describe UserSignup do
       end
     end
 
-    context "save failed with valid personal info and decliend credit car" do 
-      it 'does not create a new user' do
-        charge = double(:charge, successful?: false, error_message: "Your card was declined.")
-        StripeWrapper::Charge.should_receive(:create).and_return(charge)
-        
-        user = attributes_for(:user) 
-        UserSignup.new(Fabricate.build(:user, email: user[:email], full_name: user[:full_name], password: "123456789")).sign_up("some_stripe_token", nil)
-      
+    describe "save failed with valid personal info and decliend credit card" do 
+      it 'does not create a new user' do        
+        customer = double(:subscription_charge, successful?: false, error_message: "Your card was declined.")
+        StripeWrapper::Customer.should_receive(:create).and_return(customer)
+        UserSignup.new(Fabricate.build(:user)).sign_up("some_stripe_token", nil)
+              
         expect(User.count).to eq(0)
       end
     end
@@ -85,7 +83,7 @@ describe UserSignup do
       end
 
       it 'should not charge credit card' do
-        StripeWrapper::Charge.should_not_receive(:create)
+        StripeWrapper::Customer.should_not_receive(:create)
         user = attributes_for(:user) 
         UserSignup.new(Fabricate.build(:user, email: nil, full_name: user[:full_name], password: "123456789")).sign_up("some_stripe_token", nil)
       end
