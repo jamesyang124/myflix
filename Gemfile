@@ -18,6 +18,7 @@ gem 'stripe'
 gem 'fog'
 gem 'pg'
 gem 'draper'
+gem 'stripe_event'
 
 group :assets do
   gem 'sass-rails',   '~> 4.0.0'

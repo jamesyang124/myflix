@@ -8,7 +8,7 @@ describe UserSignup do
       after { ActionMailer::Base.deliveries.clear }
       
       before :each do 
-        customer = double(:subscription_charge, successful?: true)
+        customer = double(:subscription_charge, successful?: true, customer_token: "c_token")
         StripeWrapper::Customer.should_receive(:create).and_return(customer)
       end
 
@@ -26,6 +26,11 @@ describe UserSignup do
 
         recipient =  User.where(email: user[:email]).first
         expect(recipient.follows?(inviter)).to be_true
+      end
+
+      it 'stores a customer token from stripe' do 
+        UserSignup.new(Fabricate.build(:user)).sign_up("some_stripe_token", nil)
+        expect(User.first.customer_token).to eq("c_token")
       end
 
       it 'makes the inviter follows the user' do 

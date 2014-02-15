@@ -14,6 +14,7 @@ class UserSignup
       )
 
       if customer.successful?
+        @user.customer_token = customer.customer_token
         @user.save
         handle_invitation(@user, invitation_token)
         AppMailersWorker.delay.perform_async(@user.id, @user.class.to_s, :send_welcome_email)
