@@ -26,7 +26,6 @@ class User < ActiveRecord::Base
     self.following_relationships.create(leader: another_user) if self.can_follows?(another_user) && another_user != nil
   end
 
-
   def follows?(another_user = nil) 
     following_relationships.map(&:leader).include?(another_user)
   end
@@ -35,4 +34,8 @@ class User < ActiveRecord::Base
     !(self.follows?(another_user) || self == another_user)
   end
   
+  def deactivate!
+    update_column(:active, false)
+  end
+
 end
