@@ -85,7 +85,7 @@ describe UsersController do
 
   describe 'GET #show' do 
     it_behaves_like "require_sign_in" do 
-      user = Fabricate.create(:user)
+      user = Fabricate(:user)
       let(:action) { get :show, id: user.id }
     end
 

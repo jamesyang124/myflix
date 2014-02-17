@@ -12,6 +12,7 @@ Myflix::Application.routes.draw do
 
   namespace :admin do
     resources :videos, only: [:new, :create]
+    resources :payments, only: [:index]
   end
 
   get '/people', to: 'relationships#index'
@@ -43,4 +44,5 @@ Myflix::Application.routes.draw do
   get 'ui(/:action)', controller: 'ui'
 
   mount Sidekiq::Web, at: "/sidekiq" unless Rails.env == "production"
+  mount StripeEvent::Engine => '/stripe_events'
 end
