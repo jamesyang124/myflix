@@ -64,7 +64,7 @@ describe StripeWrapper do
   end
 
   describe StripeWrapper::Customer do 
-    describe '.create' do 
+    describe '::create' do 
       it "creates a customer with valid card", :vcr do
         user = Fabricate(:user)
         response = StripeWrapper::Customer.create(
@@ -99,6 +99,20 @@ describe StripeWrapper do
             card: valid_token
           ) 
         expect(response.customer_token).to be_present        
+      end
+    end
+
+    describe "::retrieve" do
+      it "get the list of subscripton data", :vcr do
+        user = Fabricate.create(:user)
+
+        response = StripeWrapper::Customer.create(
+            user: user,
+            card: valid_token
+        )
+
+        subscriptions = StripeWrapper::Customer.retrieve(response.customer_token)
+        expect(subscriptions.data.first.id).to eq(response.subscription_token) 
       end
     end
   end
