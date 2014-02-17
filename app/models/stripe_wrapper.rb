@@ -61,7 +61,7 @@ module StripeWrapper
     end
 
     def subscription_token
-      response["subscriptions"]["data"].first.id
+      response["subscriptions"]["data"].last.id
     end
   end
 end

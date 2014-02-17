@@ -18,6 +18,6 @@
           %ul.dropdown-menu(role="menu" aria-labelledby="dlabel")
             %li
               %a(href="#") Account
-              %a(href="#") Plan and Billing
+              %a(href="billing") Plan and Billing
               = link_to "Invite a Friend", new_invitation_path
               = link_to "Sign Out", (logged_in? ? sign_out_path : root_path)

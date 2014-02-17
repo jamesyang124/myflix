@@ -8,14 +8,14 @@
           %table.table
             %thead
               %tr
-                %th
+                %th Plan Name
                 %th Next Billing Date
                 %th Price
             %tbody
               %tr
-                %td The All You Can Watch Plan
-                %td 03/19/2013
-                %td 9.99 per month
+                %td #{@recent_sub_plan}
+                %td #{@recent_sub_period_end}
+                %td #{@recent_sub_amount} per month
         = button_to "Cancel Service", nil, class: "btn"
 
         %section.payment_history
@@ -28,8 +28,8 @@
                 %th Service Duration
                 %th Total
             %tbody
-              - 8.times do
+              - @subscriptions.each do |subscription| 
                 %tr
-                  %td 12/09/2012
-                  %td 12/09/2012 - 01/08/2013
-                  %td $9.99
+                  %td= "#{Time.at(subscription.current_period_start).strftime("%m/%d/%Y")}"
+                  %td= "#{Time.at(subscription.current_period_start).strftime("%m/%d/%Y")} - #{Time.at(subscription.current_period_end).strftime("%m/%d/%Y")}"
+                  %td= number_to_currency(subscription.plan.amount/100.0)
