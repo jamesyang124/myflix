@@ -10,6 +10,7 @@ module ApplicationHelper
   end
 
   def options_for_video_reviews(selected = nil)
-    options_for_select((1..5).map{ |number| [pluralize(number,"Star"), number.to_s]}, selected)
+    options = (1..5).map{ |number| [pluralize(number,"Star"), number.to_s]}
+    options_for_select(options, selected)
   end
 end
