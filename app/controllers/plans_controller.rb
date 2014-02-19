@@ -11,7 +11,7 @@ class PlansController < ApplicationController
   end
 
   def create
-    # pop a window by Stripe? or handle manually?
+    # pop a window by Stripe? or handle manually? /
   end
 
   private

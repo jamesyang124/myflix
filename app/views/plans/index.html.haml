@@ -1,3 +1,11 @@
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+<script type="text/javascript">
+Stripe.setPublishableKey("#{ENV['STRIPE_PUBLISHABLE_KEY']}");
+</script>
+
+= javascript_include_tag 'payment'
+
 %section.billing.container
   .row
     .span10.offset1
@@ -16,11 +24,32 @@
                 %td #{@recent_sub_plan}
                 %td #{@recent_sub_period_end}
                 %td #{@recent_sub_amount} per month
-        = button_to "Cancel Service", nil, class: "btn"
+          %a.btn(href="#payment-form" id="cancel_subscription")= "Cancel Service"
+          = form_tag update_plans_path, method: :post, id: "payment-form", class: "well" do |f|
+            %fieldset.credit_card
+              %header
+                %h1 Credit Card Information
+              %span.payment-errors
+              .control-group
+                %label.control-label(for="credit-card-number") Credit Card Number
+                .controls
+                  %input.span3(type="text" data-stripe="number" id="credit-card-number")
+              .control-group
+                %label.control-label(for="security-code") Security Code
+                .controls
+                  %input.span3(type="text" data-stripe="cvc" id="security-code")
+              .control-group
+                %label.control-label Expiration
+                .controls
+                  = select_month(Date.today, {add_month_numbers: true}, class: 'span2', data: {stripe: "exp-month"})
+                  = select_year(Date.today.year, {start_year: Date.today.year, end_year: Date.today.year + 4}, :"data-stripe" => "exp-year", class: 'span1')
+            %fieldset.actions.control-group
+            .controls
+              %input(type="submit" value="Subscribe" class="btn")
 
         %section.payment_history
           %header
-            %h3 Payment History
+            %h1 Payment History
           %table.table
             %thead
               %tr
