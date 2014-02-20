@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.stripe.com/v1/customers
     body:
       encoding: US-ASCII
-      string: card=tok_103Vy8225BGP9bWCS1yzZ3zG&plan=myflix_base&email=adam%40nitzscheberge.net
+      string: card=tok_103Wqd225BGP9bWCKZ42AdLr&plan=myflix_base&email=celestino%40lueilwitz.com
     headers:
       Accept:
       - '*/*; q=0.5, application/xml'
@@ -22,7 +22,7 @@ http_interactions:
         MacBook-Air.local 13.0.0 Darwin Kernel Version 13.0.0: Thu Sep 19 22:22:27
         PDT 2013; root:xnu-2422.1.72~6/RELEASE_X86_64 x86_64"}'
       Content-Length:
-      - '81'
+      - '82'
   response:
     status:
       code: 200
@@ -31,21 +31,21 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 17 Feb 2014 18:32:39 GMT
+      - Thu, 20 Feb 2014 02:51:58 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
-      - '2848'
+      - '2849'
       Connection:
       - keep-alive
-      Access-Control-Max-Age:
-      - '300'
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Access-Control-Allow-Methods:
-      - GET, POST, HEAD, OPTIONS, DELETE
       Cache-Control:
       - no-cache, no-store
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Max-Age:
+      - '300'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
       Strict-Transport-Security:
       - max-age=31556926; includeSubDomains
     body:
@@ -53,20 +53,20 @@ http_interactions:
       string: |
         {
           "object": "customer",
-          "created": 1392661958,
-          "id": "cus_3Vy8FTuHu7bLpG",
+          "created": 1392864717,
+          "id": "cus_3WqdVRslOQCbzd",
           "livemode": false,
           "description": null,
-          "email": "adam@nitzscheberge.net",
+          "email": "celestino@lueilwitz.com",
           "delinquent": false,
           "metadata": {},
           "subscriptions": {
             "object": "list",
             "count": 1,
-            "url": "/v1/customers/cus_3Vy8FTuHu7bLpG/subscriptions",
+            "url": "/v1/customers/cus_3WqdVRslOQCbzd/subscriptions",
             "data": [
               {
-                "id": "sub_3Vy8mp9SmIAsTx",
+                "id": "sub_3WqdqrsCD8NVo9",
                 "plan": {
                   "interval": "month",
                   "name": "myflix_base_plan",
@@ -81,12 +81,12 @@ http_interactions:
                   "metadata": {}
                 },
                 "object": "subscription",
-                "start": 1392661958,
+                "start": 1392864717,
                 "status": "active",
-                "customer": "cus_3Vy8FTuHu7bLpG",
+                "customer": "cus_3WqdVRslOQCbzd",
                 "cancel_at_period_end": false,
-                "current_period_start": 1392661958,
-                "current_period_end": 1395081158,
+                "current_period_start": 1392864717,
+                "current_period_end": 1395283917,
                 "ended_at": null,
                 "trial_start": null,
                 "trial_end": null,
@@ -103,17 +103,17 @@ http_interactions:
           "cards": {
             "object": "list",
             "count": 1,
-            "url": "/v1/customers/cus_3Vy8FTuHu7bLpG/cards",
+            "url": "/v1/customers/cus_3WqdVRslOQCbzd/cards",
             "data": [
               {
-                "id": "card_103Vy8225BGP9bWC7DwuvHwL",
+                "id": "card_103Wqd225BGP9bWCBxyykCHR",
                 "object": "card",
                 "last4": "4242",
                 "type": "Visa",
                 "exp_month": 2,
                 "exp_year": 2015,
                 "fingerprint": "9ejOe3jqfcNEBbko",
-                "customer": "cus_3Vy8FTuHu7bLpG",
+                "customer": "cus_3WqdVRslOQCbzd",
                 "country": "US",
                 "name": null,
                 "address_line1": null,
@@ -128,9 +128,9 @@ http_interactions:
               }
             ]
           },
-          "default_card": "card_103Vy8225BGP9bWC7DwuvHwL",
+          "default_card": "card_103Wqd225BGP9bWCBxyykCHR",
           "subscription": {
-            "id": "sub_3Vy8mp9SmIAsTx",
+            "id": "sub_3WqdqrsCD8NVo9",
             "plan": {
               "interval": "month",
               "name": "myflix_base_plan",
@@ -145,12 +145,12 @@ http_interactions:
               "metadata": {}
             },
             "object": "subscription",
-            "start": 1392661958,
+            "start": 1392864717,
             "status": "active",
-            "customer": "cus_3Vy8FTuHu7bLpG",
+            "customer": "cus_3WqdVRslOQCbzd",
             "cancel_at_period_end": false,
-            "current_period_start": 1392661958,
-            "current_period_end": 1395081158,
+            "current_period_start": 1392864717,
+            "current_period_end": 1395283917,
             "ended_at": null,
             "trial_start": null,
             "trial_end": null,
@@ -161,5 +161,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Mon, 17 Feb 2014 18:32:41 GMT
+  recorded_at: Thu, 20 Feb 2014 02:51:58 GMT
 recorded_with: VCR 2.8.0

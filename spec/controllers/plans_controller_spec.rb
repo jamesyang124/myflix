@@ -1,6 +1,16 @@
 require 'spec_helper'
 
-describe PlansController do 
+describe PlansController do
+  # set a memoized method for returning subscriptions test double
+  let(:subscriptions) do 
+    subscriptions = double(:valid_list)
+    subscriptions.stub_chain(:data, :last, :plan, :name).and_return("myflix_base_plan")
+    subscriptions.stub_chain(:data, :last, :current_period_end).and_return(1392446068)
+    subscriptions.stub_chain(:data, :last, :plan, :amount).and_return(999)
+    subscriptions
+  end
+
+
   describe "GET #index" do 
     it "set @payments for current user", :vcr do
       user = Fabricate(:user, customer_token: "somt_token")
@@ -16,11 +26,6 @@ describe PlansController do
     it "retrieve a list of subscription history from Stripe", :vcr do
       user = Fabricate(:user, customer_token: "some_token")
       set_current_user(user)
-
-      subscriptions = double(:valid_list)
-      subscriptions.stub_chain(:data, :last, :plan, :name).and_return("myflix_base_plan")
-      subscriptions.stub_chain(:data, :last, :current_period_end).and_return(1392446068)
-      subscriptions.stub_chain(:data, :last, :plan, :amount).and_return(999)
 
       StripeWrapper::Customer.should_receive(:retrieve).with(user.customer_token).and_return(subscriptions)
 
@@ -54,6 +59,116 @@ describe PlansController do
   end
 
   describe "POST #create" do
+
+    it "should assigns @user", :vcr do
+      user = Fabricate(:user, customer_token: "123454321")
+      set_current_user(user)
+
+      result = double(:mock_result, successful?: true, status_message: "thanks for your payment")
+      
+      # mock UserSignup's behavior only, do not create real object then set message expectation.
+      # UserSignup.any_instance.should_receive(:sign_up).with("stripe_token", nil) => ok
+      # UserSignup.new(user).should_receive(:sign_up).with("stripe_token", nil)    => failed
+
+      expect_any_instance_of(UserSignup).to receive(:sign_up).with("stripe_token", nil).and_return(result)
+
+      post :create, stripeToken: "stripe_token"
+      expect(assigns(:user)).to eq(user)
+    end
+
+    context "when subscription successed" do
+      it "sets flash success message" do
+        user = Fabricate(:user, customer_token: "123454321")
+        set_current_user(user)
+
+        result = double(:mock_result, successful?: true, status_message: "thanks for your payment")
+        expect_any_instance_of(UserSignup).to receive(:sign_up).with("stripe_token", nil).and_return(result)
+
+        post :create, stripeToken: "stripe_token"
+        expect(flash[:success]).to eq("thanks for your payment")
+      end
+
+      it "redirect to plans_path when subscription successed" do
+        user = Fabricate(:user, customer_token: "123454321")
+        set_current_user(user)
+
+        result = double(:mock_result, successful?: true, status_message: "thanks for your payment")
+        expect_any_instance_of(UserSignup).to receive(:sign_up).with("stripe_token", nil).and_return(result)
+
+        post :create, stripeToken: "stripe_token"
+        expect(response).to redirect_to plans_path
+      end
+
+    end
     
+    context "when subscription failed" do
+      it "should render index view template", :vcr do
+        user = Fabricate(:user, customer_token: "123454321")
+        set_current_user(user)
+
+        result = double(:mock_result, successful?: false, status_message: "failed to receive your payment")
+        expect_any_instance_of(UserSignup).to receive(:sign_up).with("stripe_token", nil).and_return(result)
+
+        PlansController.any_instance.should_receive(:retrieve_stripe_subscriptions).with("123454321").and_return(true)
+
+        post :create, stripeToken: "stripe_token"
+        expect(response).to render_template :index        
+      end
+
+      it "assigns @payments and related instance variable for filling view template" do
+        user = Fabricate(:user, customer_token: "123454321")
+        set_current_user(user)
+
+        result = double(:mock_result, successful?: false, status_message: "failed to receive your payment")
+        expect_any_instance_of(UserSignup).to receive(:sign_up).with("stripe_token", nil).and_return(result)
+
+        PlansController.any_instance.should_receive(:retrieve_stripe_subscriptions).with("123454321").and_return(true)
+
+        post :create, stripeToken: "stripe_token"
+        expect(assigns(:payments)).to eq(Payment.where(user_id: user))         
+      end
+
+      context 'retrieve billing information failed' do 
+        it 'sets flash info message', :vcr do 
+          user = Fabricate(:user, customer_token: "123454321")
+          set_current_user(user)
+
+          result = double(:mock_result, successful?: false, status_message: "failed to receive your payment")
+          expect_any_instance_of(UserSignup).to receive(:sign_up).with("stripe_token", nil).and_return(result)
+
+          PlansController.any_instance.should_receive(:retrieve_stripe_subscriptions).with("123454321").and_return(false)
+  
+          post :create, stripeToken: "stripe_token"
+          expect(flash[:info]).to eq("We can not find your billing information, please contact customer service.")        
+
+        end
+
+        it "redirect to root_path", :vcr do 
+          user = Fabricate(:user, customer_token: "123454321")
+          set_current_user(user)
+  
+          result = double(:mock_result, successful?: false, status_message: "failed to receive your payment")
+          expect_any_instance_of(UserSignup).to receive(:sign_up).with("stripe_token", nil).and_return(result)
+
+          PlansController.any_instance.should_receive(:retrieve_stripe_subscriptions).with("123454321").and_return(false)
+
+          post :create, stripeToken: "stripe_token"
+          expect(response).to redirect_to root_path 
+        end
+      end
+
+      it "sets flash error message", :vcr do
+        user = Fabricate(:user, customer_token: "123454321")
+        set_current_user(user)
+
+        result = double(:mock_result, successful?: false, status_message: "failed to receive your payment")
+        expect_any_instance_of(UserSignup).to receive(:sign_up).with("stripe_token", nil).and_return(result)
+
+        PlansController.any_instance.should_receive(:retrieve_stripe_subscriptions).with("123454321").and_return(true)
+
+        post :create, stripeToken: "stripe_token"
+        expect(flash[:error]).to eq("failed to receive your payment")        
+      end
+    end
   end
 end

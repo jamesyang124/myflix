@@ -73,7 +73,7 @@ describe UserSignup do
         customer = double(:subscription_charge, successful?: false, error_message: "Your card was declined.")
         StripeWrapper::Customer.should_receive(:create).and_return(customer)
         UserSignup.new(Fabricate.build(:user)).sign_up("some_stripe_token", nil)
-              
+      
         expect(User.count).to eq(0)
       end
     end

@@ -39,7 +39,7 @@ class UserSignup
   private
 
   def handle_invitation(user, invitation_token)
-    if invitation = Invitation.find_by(token: invitation_token)
+    if invitation_token and invitation = Invitation.find_by(token: invitation_token)
       user.follow(invitation.inviter)
       invitation.inviter.follow(user)
       invitation.update_column(:token, nil)
