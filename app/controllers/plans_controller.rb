@@ -2,9 +2,10 @@ class PlansController < ApplicationController
   before_action :require_user
 
   def index
-    @payments = Payment.where(user_id: current_user)
-    customer_token = current_user.customer_token
-    unless customer_token and retrieve_stripe_subscriptions(customer_token)
+    @payments = Payment.where(user_id: current_user.id).reload
+    if customer_token = current_user.customer_token and retrieve_stripe_subscriptions(customer_token)
+      render :index
+    else
       flash[:info] = "We can not find your billing information, please contact customer service."
       redirect_to root_path
     end
@@ -12,32 +13,45 @@ class PlansController < ApplicationController
 
   def create
     @user = current_user
-    result = UserSignup.new(@user).sign_up(params[:stripeToken], nil)
-  
+    result = UserSignup.new(@user).recharge(params[:stripeToken])
     if result.successful?
-      flash[:success] = result.status_message
-      redirect_to plans_path
+      flash[:success] = result.status_message    
+      redirect_to home_path
     else
       flash.now[:error] = result.status_message
-      @payments = Payment.where(user_id: @user)
-      customer_token = @user.customer_token
-      unless customer_token and retrieve_stripe_subscriptions(customer_token)
+      @payments = Payment.where(user_id: current_user.id)
+      customer_token = current_user.customer_token
+      if customer_token and retrieve_stripe_subscriptions(customer_token)
+        render :index
+      else
         flash[:info] = "We can not find your billing information, please contact customer service."
         redirect_to root_path
-      else
-        render :index
       end
     end    
+  end
+
+  def destroy
+    customer_token = current_user.customer_token
+    begin
+      customer = Stripe::Customer.retrieve(customer_token)
+      customer.subscriptions.retrieve(StripeWrapper::Customer.retrieve(customer_token).data.last.id).delete
+      current_user.deactivate!
+      flash[:info] = "Your subscription will be end at the next billing date."
+      redirect_to home_path
+    rescue => e 
+      flash[:info] = "Wrong request for canceling subscription, please contact customer service."
+      redirect_to plans_path
+    end
   end
 
   private
 
   def retrieve_stripe_subscriptions(customer_token = nil) 
     begin
-      @subscriptions = StripeWrapper::Customer.retrieve(customer_token)
-      @recent_sub_plan = @subscriptions.data.last.plan.name
-      @recent_sub_period_end = Time.at(@subscriptions.data.last.current_period_end).strftime("%m/%d/%Y")
-      @recent_sub_amount = @subscriptions.data.last.plan.amount/100.0
+      @subscriptions = Payment.where(user_id: current_user).first
+      @recent_sub_plan = "Myflix_base_plan" 
+      @recent_sub_period_end = "#{Time.at(@subscriptions.end_date).strftime("%m/%d/%Y")}"
+      @recent_sub_amount = @subscriptions.amount/100.0
       true
     rescue Stripe::CardError => e 
       false

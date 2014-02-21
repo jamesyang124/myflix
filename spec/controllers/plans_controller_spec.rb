@@ -4,17 +4,15 @@ describe PlansController do
   # set a memoized method for returning subscriptions test double
   let(:subscriptions) do 
     subscriptions = double(:valid_list)
-    subscriptions.stub_chain(:data, :last, :plan, :name).and_return("myflix_base_plan")
-    subscriptions.stub_chain(:data, :last, :current_period_end).and_return(1392446068)
-    subscriptions.stub_chain(:data, :last, :plan, :amount).and_return(999)
+    subscriptions.stub_chain(:amount).and_return(999)
     subscriptions
   end
 
 
   describe "GET #index" do 
     it "set @payments for current user", :vcr do
-      user = Fabricate(:user, customer_token: "somt_token")
-      Payment.create(amount: 999, user: user)
+      user = Fabricate(:user, customer_token: "some_token")
+      Payment.create(amount: 999, user: user, end_date: 1392446068)
       set_current_user(user)
     
       PlansController.any_instance.should_receive(:retrieve_stripe_subscriptions).with(user.customer_token).and_return(true)
@@ -26,11 +24,12 @@ describe PlansController do
     it "retrieve a list of subscription history from Stripe", :vcr do
       user = Fabricate(:user, customer_token: "some_token")
       set_current_user(user)
+      Payment.create(amount: 999, user: user, end_date: 1392446068)
 
-      StripeWrapper::Customer.should_receive(:retrieve).with(user.customer_token).and_return(subscriptions)
+      #StripeWrapper::Customer.should_receive(:retrieve).with(user.customer_token).and_return(subscriptions)
 
       get :index
-      expect(assigns(:recent_sub_plan)).to eq("myflix_base_plan")  
+      expect(assigns(:recent_sub_plan)).to eq("Myflix_base_plan")  
       expect(assigns(:recent_sub_period_end)).to eq(Time.at(1392446068).strftime("%m/%d/%Y"))
       expect(assigns(:recent_sub_amount)).to eq(9.99)       
     end
@@ -70,7 +69,7 @@ describe PlansController do
       # UserSignup.any_instance.should_receive(:sign_up).with("stripe_token", nil) => ok
       # UserSignup.new(user).should_receive(:sign_up).with("stripe_token", nil)    => failed
 
-      expect_any_instance_of(UserSignup).to receive(:sign_up).with("stripe_token", nil).and_return(result)
+      expect_any_instance_of(UserSignup).to receive(:recharge).with("stripe_token").and_return(result)
 
       post :create, stripeToken: "stripe_token"
       expect(assigns(:user)).to eq(user)
@@ -82,7 +81,7 @@ describe PlansController do
         set_current_user(user)
 
         result = double(:mock_result, successful?: true, status_message: "thanks for your payment")
-        expect_any_instance_of(UserSignup).to receive(:sign_up).with("stripe_token", nil).and_return(result)
+        expect_any_instance_of(UserSignup).to receive(:recharge).with("stripe_token").and_return(result)
 
         post :create, stripeToken: "stripe_token"
         expect(flash[:success]).to eq("thanks for your payment")
@@ -93,10 +92,10 @@ describe PlansController do
         set_current_user(user)
 
         result = double(:mock_result, successful?: true, status_message: "thanks for your payment")
-        expect_any_instance_of(UserSignup).to receive(:sign_up).with("stripe_token", nil).and_return(result)
+        expect_any_instance_of(UserSignup).to receive(:recharge).with("stripe_token").and_return(result)
 
         post :create, stripeToken: "stripe_token"
-        expect(response).to redirect_to plans_path
+        expect(response).to redirect_to home_path
       end
 
     end
@@ -107,7 +106,7 @@ describe PlansController do
         set_current_user(user)
 
         result = double(:mock_result, successful?: false, status_message: "failed to receive your payment")
-        expect_any_instance_of(UserSignup).to receive(:sign_up).with("stripe_token", nil).and_return(result)
+        expect_any_instance_of(UserSignup).to receive(:recharge).with("stripe_token").and_return(result)
 
         PlansController.any_instance.should_receive(:retrieve_stripe_subscriptions).with("123454321").and_return(true)
 
@@ -120,7 +119,7 @@ describe PlansController do
         set_current_user(user)
 
         result = double(:mock_result, successful?: false, status_message: "failed to receive your payment")
-        expect_any_instance_of(UserSignup).to receive(:sign_up).with("stripe_token", nil).and_return(result)
+        expect_any_instance_of(UserSignup).to receive(:recharge).with("stripe_token").and_return(result)
 
         PlansController.any_instance.should_receive(:retrieve_stripe_subscriptions).with("123454321").and_return(true)
 
@@ -134,7 +133,7 @@ describe PlansController do
           set_current_user(user)
 
           result = double(:mock_result, successful?: false, status_message: "failed to receive your payment")
-          expect_any_instance_of(UserSignup).to receive(:sign_up).with("stripe_token", nil).and_return(result)
+          expect_any_instance_of(UserSignup).to receive(:recharge).with("stripe_token").and_return(result)
 
           PlansController.any_instance.should_receive(:retrieve_stripe_subscriptions).with("123454321").and_return(false)
   
@@ -148,7 +147,7 @@ describe PlansController do
           set_current_user(user)
   
           result = double(:mock_result, successful?: false, status_message: "failed to receive your payment")
-          expect_any_instance_of(UserSignup).to receive(:sign_up).with("stripe_token", nil).and_return(result)
+          expect_any_instance_of(UserSignup).to receive(:recharge).with("stripe_token").and_return(result)
 
           PlansController.any_instance.should_receive(:retrieve_stripe_subscriptions).with("123454321").and_return(false)
 
@@ -162,13 +161,33 @@ describe PlansController do
         set_current_user(user)
 
         result = double(:mock_result, successful?: false, status_message: "failed to receive your payment")
-        expect_any_instance_of(UserSignup).to receive(:sign_up).with("stripe_token", nil).and_return(result)
+        expect_any_instance_of(UserSignup).to receive(:recharge).with("stripe_token").and_return(result)
 
         PlansController.any_instance.should_receive(:retrieve_stripe_subscriptions).with("123454321").and_return(true)
 
         post :create, stripeToken: "stripe_token"
         expect(flash[:error]).to eq("failed to receive your payment")        
       end
+    end
+  end
+
+  describe "DELETE #destroy" do 
+    
+    it 'should redirect_to home_path', :vcr do 
+      user = Fabricate(:user, customer_token: "customer_token")
+      set_current_user user
+      Payment.create(amount: 999, user: user)
+
+      customer = double(:customer)
+      customer.stub_chain(:subscriptions, :retrieve, :delete) 
+      Stripe::Customer.should_receive(:retrieve).with("customer_token").and_return(customer)
+
+      stripe_wrapper_double = double(:stripe_wrapper_double)
+      stripe_wrapper_double.stub_chain(:data, :last, :id)
+      StripeWrapper::Customer.should_receive(:retrieve).with("customer_token").and_return(stripe_wrapper_double)
+
+      delete :destroy
+      expect(response).to redirect_to home_path
     end
   end
 end

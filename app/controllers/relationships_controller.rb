@@ -1,5 +1,5 @@
 class RelationshipsController < ApplicationController 
-  before_action :require_user, only: [:index, :destroy, :create]
+  before_action :require_user, :require_activation, only: [:index, :destroy, :create]
 
   def index
     @relationships = current_user.following_relationships 
@@ -24,6 +24,4 @@ class RelationshipsController < ApplicationController
     end
     redirect_to people_path
   end
-
-
 end

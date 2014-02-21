@@ -12,13 +12,13 @@ http_interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - Stripe/v1 RubyBindings/1.9.9
+      - Stripe/v1 RubyBindings/1.10.1
       Authorization:
       - Bearer sk_test_e2Jyqc84D52dW381fNpkCo4i
       Content-Type:
       - application/x-www-form-urlencoded
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.9.9","lang":"ruby","lang_version":"2.0.0 p353 (2013-11-22)","platform":"x86_64-darwin12.5.0","publisher":"stripe","uname":"Darwin
+      - '{"bindings_version":"1.10.1","lang":"ruby","lang_version":"2.0.0 p353 (2013-11-22)","platform":"x86_64-darwin12.5.0","publisher":"stripe","uname":"Darwin
         MacBook-Air.local 13.0.0 Darwin Kernel Version 13.0.0: Thu Sep 19 22:22:27
         PDT 2013; root:xnu-2422.1.72~6/RELEASE_X86_64 x86_64"}'
       Content-Length:
@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 20 Feb 2014 02:52:07 GMT
+      - Fri, 21 Feb 2014 06:19:31 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
@@ -52,14 +52,14 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "tok_103Wqd225BGP9bWC6LrbwTIs",
+          "id": "tok_103XHD225BGP9bWC0IRPJVp5",
           "livemode": false,
-          "created": 1392864726,
+          "created": 1392963571,
           "used": false,
           "object": "token",
           "type": "card",
           "card": {
-            "id": "card_103Wqd225BGP9bWCJ4PGGpmA",
+            "id": "card_103XHD225BGP9bWCMi2xtpvH",
             "object": "card",
             "last4": "4242",
             "type": "Visa",
@@ -78,26 +78,26 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Thu, 20 Feb 2014 02:52:07 GMT
+  recorded_at: Fri, 21 Feb 2014 06:19:31 GMT
 - request:
     method: post
     uri: https://api.stripe.com/v1/customers
     body:
       encoding: US-ASCII
-      string: card=tok_103Wqd225BGP9bWC6LrbwTIs&plan=myflix_base&email=thora.nikolaus%40kiehn.net
+      string: card=tok_103XHD225BGP9bWC0IRPJVp5&plan=myflix_base&email=camryn%40lubowitzolson.net
     headers:
       Accept:
       - '*/*; q=0.5, application/xml'
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - Stripe/v1 RubyBindings/1.9.9
+      - Stripe/v1 RubyBindings/1.10.1
       Authorization:
       - Bearer sk_test_e2Jyqc84D52dW381fNpkCo4i
       Content-Type:
       - application/x-www-form-urlencoded
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.9.9","lang":"ruby","lang_version":"2.0.0 p353 (2013-11-22)","platform":"x86_64-darwin12.5.0","publisher":"stripe","uname":"Darwin
+      - '{"bindings_version":"1.10.1","lang":"ruby","lang_version":"2.0.0 p353 (2013-11-22)","platform":"x86_64-darwin12.5.0","publisher":"stripe","uname":"Darwin
         MacBook-Air.local 13.0.0 Darwin Kernel Version 13.0.0: Thu Sep 19 22:22:27
         PDT 2013; root:xnu-2422.1.72~6/RELEASE_X86_64 x86_64"}'
       Content-Length:
@@ -110,7 +110,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 20 Feb 2014 02:52:07 GMT
+      - Fri, 21 Feb 2014 06:19:32 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
@@ -119,12 +119,12 @@ http_interactions:
       - keep-alive
       Access-Control-Max-Age:
       - '300'
-      Access-Control-Allow-Credentials:
-      - 'true'
       Cache-Control:
       - no-cache, no-store
       Access-Control-Allow-Methods:
       - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Credentials:
+      - 'true'
       Strict-Transport-Security:
       - max-age=31556926; includeSubDomains
     body:
@@ -132,20 +132,20 @@ http_interactions:
       string: |
         {
           "object": "customer",
-          "created": 1392864727,
-          "id": "cus_3WqdUHzmWjXMxs",
+          "created": 1392963571,
+          "id": "cus_3XHD6SElFXFoF2",
           "livemode": false,
           "description": null,
-          "email": "thora.nikolaus@kiehn.net",
+          "email": "camryn@lubowitzolson.net",
           "delinquent": false,
           "metadata": {},
           "subscriptions": {
             "object": "list",
             "count": 1,
-            "url": "/v1/customers/cus_3WqdUHzmWjXMxs/subscriptions",
+            "url": "/v1/customers/cus_3XHD6SElFXFoF2/subscriptions",
             "data": [
               {
-                "id": "sub_3WqdPxunuwc7IA",
+                "id": "sub_3XHDVg9JlB6eGB",
                 "plan": {
                   "interval": "month",
                   "name": "myflix_base_plan",
@@ -160,12 +160,12 @@ http_interactions:
                   "metadata": {}
                 },
                 "object": "subscription",
-                "start": 1392864727,
+                "start": 1392963571,
                 "status": "active",
-                "customer": "cus_3WqdUHzmWjXMxs",
+                "customer": "cus_3XHD6SElFXFoF2",
                 "cancel_at_period_end": false,
-                "current_period_start": 1392864727,
-                "current_period_end": 1395283927,
+                "current_period_start": 1392963571,
+                "current_period_end": 1395382771,
                 "ended_at": null,
                 "trial_start": null,
                 "trial_end": null,
@@ -182,17 +182,17 @@ http_interactions:
           "cards": {
             "object": "list",
             "count": 1,
-            "url": "/v1/customers/cus_3WqdUHzmWjXMxs/cards",
+            "url": "/v1/customers/cus_3XHD6SElFXFoF2/cards",
             "data": [
               {
-                "id": "card_103Wqd225BGP9bWCJ4PGGpmA",
+                "id": "card_103XHD225BGP9bWCMi2xtpvH",
                 "object": "card",
                 "last4": "4242",
                 "type": "Visa",
                 "exp_month": 1,
                 "exp_year": 2015,
                 "fingerprint": "9ejOe3jqfcNEBbko",
-                "customer": "cus_3WqdUHzmWjXMxs",
+                "customer": "cus_3XHD6SElFXFoF2",
                 "country": "US",
                 "name": null,
                 "address_line1": null,
@@ -207,9 +207,9 @@ http_interactions:
               }
             ]
           },
-          "default_card": "card_103Wqd225BGP9bWCJ4PGGpmA",
+          "default_card": "card_103XHD225BGP9bWCMi2xtpvH",
           "subscription": {
-            "id": "sub_3WqdPxunuwc7IA",
+            "id": "sub_3XHDVg9JlB6eGB",
             "plan": {
               "interval": "month",
               "name": "myflix_base_plan",
@@ -224,12 +224,12 @@ http_interactions:
               "metadata": {}
             },
             "object": "subscription",
-            "start": 1392864727,
+            "start": 1392963571,
             "status": "active",
-            "customer": "cus_3WqdUHzmWjXMxs",
+            "customer": "cus_3XHD6SElFXFoF2",
             "cancel_at_period_end": false,
-            "current_period_start": 1392864727,
-            "current_period_end": 1395283927,
+            "current_period_start": 1392963571,
+            "current_period_end": 1395382771,
             "ended_at": null,
             "trial_start": null,
             "trial_end": null,
@@ -240,5 +240,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Thu, 20 Feb 2014 02:52:07 GMT
+  recorded_at: Fri, 21 Feb 2014 06:19:32 GMT
 recorded_with: VCR 2.8.0

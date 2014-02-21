@@ -1,5 +1,5 @@
 class QueueItemsController < ApplicationController 
-  before_action :require_user
+  before_action :require_user, :require_activation 
   
   def index
     @queue_items = current_user.queue_items.order("position ASC")

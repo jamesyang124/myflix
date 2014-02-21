@@ -24,28 +24,32 @@ Stripe.setPublishableKey("#{ENV['STRIPE_PUBLISHABLE_KEY']}");
                 %td #{@recent_sub_plan}
                 %td #{@recent_sub_period_end}
                 %td #{@recent_sub_amount} per month
-          %a.btn(href="#payment-form" id="cancel_subscription")= "Cancel Service"
-          = form_tag update_plans_path, method: :post, id: "payment-form", class: "well" do |f|
-            %fieldset.credit_card
-              %header
-                %h1 Credit Card Information
-              %span.payment-errors
-              .control-group
-                %label.control-label(for="credit-card-number") Credit Card Number
-                .controls
-                  %input.span3(type="text" data-stripe="number" id="credit-card-number")
-              .control-group
-                %label.control-label(for="security-code") Security Code
-                .controls
-                  %input.span3(type="text" data-stripe="cvc" id="security-code")
-              .control-group
-                %label.control-label Expiration
-                .controls
-                  = select_month(Date.today, {add_month_numbers: true}, class: 'span2', data: {stripe: "exp-month"})
-                  = select_year(Date.today.year, {start_year: Date.today.year, end_year: Date.today.year + 4}, :"data-stripe" => "exp-year", class: 'span1')
-            %fieldset.actions.control-group
-            .controls
-              %input(type="submit" value="Subscribe" class="btn")
+          - if current_user.active
+            = form_tag plans_path, method: :delete do 
+              = submit_tag "Cancel Service", class: "btn"
+          - else
+            %a.btn(href="#payment-form" id="cancel_subscription")= "Subscribe Myflix"
+            = form_tag plans_path, method: :post, id: "payment-form", class: "well" do 
+              %fieldset.credit_card
+                %header
+                  %h1 Credit Card Information
+                %span.payment-errors
+                .control-group
+                  %label.control-label(for="credit-card-number") Credit Card Number
+                  .controls
+                    %input.span3(type="text" data-stripe="number" id="credit-card-number")
+                .control-group
+                  %label.control-label(for="security-code") Security Code
+                  .controls
+                    %input.span3(type="text" data-stripe="cvc" id="security-code")
+                .control-group
+                  %label.control-label Expiration
+                  .controls
+                    = select_month(Date.today, {add_month_numbers: true}, class: 'span2', data: {stripe: "exp-month"})
+                    = select_year(Date.today.year, {start_year: Date.today.year, end_year: Date.today.year + 4}, :"data-stripe" => "exp-year", class: 'span1')
+              %fieldset.actions.control-group
+              .controls
+                %input(type="submit" value="Subscribe" class="btn")
 
         %section.payment_history
           %header
@@ -53,12 +57,12 @@ Stripe.setPublishableKey("#{ENV['STRIPE_PUBLISHABLE_KEY']}");
           %table.table
             %thead
               %tr
-                %th Date
+                %th Invoice Date
                 %th Service Duration
                 %th Total
             %tbody
-              - @subscriptions.each do |subscription| 
+              - @payments.each do |payment| 
                 %tr
-                  %td= "#{Time.at(subscription.current_period_start).strftime("%m/%d/%Y")}"
-                  %td= "#{Time.at(subscription.current_period_start).strftime("%m/%d/%Y")} - #{Time.at(subscription.current_period_end).strftime("%m/%d/%Y")}"
-                  %td= number_to_currency(subscription.plan.amount/100.0)
+                  %td= "#{Time.at(payment.create_at).strftime("%m/%d/%Y")}"
+                  %td= "#{Time.at(payment.start_date).strftime("%m/%d/%Y")} - #{Time.at(payment.end_date).strftime("%m/%d/%Y")}"
+                  %td= number_to_currency(payment.amount/100.0)
