@@ -27,3 +27,5 @@
 13. Refactored by design patterns, decorator, domain policy object include.
 
 14. Functionality for inviting friends, has been done by setting up self-referential association.
+
+15. Manage ENV by Figaro gem. `rake figaro:heroku`
