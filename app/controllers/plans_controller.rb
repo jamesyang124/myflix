@@ -1,5 +1,5 @@
 class PlansController < ApplicationController 
-  before_action :require_user
+  before_action :exist_user 
 
   def index
     @payments = Payment.where(user_id: current_user.id).reload
@@ -55,6 +55,13 @@ class PlansController < ApplicationController
       true
     rescue Stripe::CardError => e 
       false
+    end
+  end
+
+  def exist_user
+    if !current_user
+      flash[:info] = "Accessed reserved for members only, please sign in first."
+      redirect_to sign_in_path
     end
   end
 end

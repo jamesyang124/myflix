@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
       redirect_to sign_in_path
     end
   end
-
+  
   def require_activation 
     if !current_user.active and Payment.where(user_id: current_user).last.end_date > Time.now.to_i
       flash[:info] = "please subscribe to continue service."
