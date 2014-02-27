@@ -1,5 +1,5 @@
 class VideosController < ApplicationController 
-  before_action :require_user, except: [:front]
+  before_action :require_user, :require_activation, except: [:front]
 
   def index 
     @videos = Video.all

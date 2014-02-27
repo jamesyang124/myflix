@@ -7,7 +7,7 @@ FactoryGirl.define do
     full_name { Faker::Name.name }
     password { pword }
     password_confirmation { pword }
-
+    active { true }
 
     factory :invalid_name do 
       full_name nil

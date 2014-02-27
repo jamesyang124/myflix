@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  before_action :require_user, only: [:destroy]
+  before_action :require_user, :require_activation, only: [:destroy]
 
   def new
     redirect_to home_path if logged_in?
@@ -12,8 +12,9 @@ class SessionsController < ApplicationController
       if @user.active?
         login_user!(@user)
       else
-        flash[:error] = "Your account has been suspended, please contact customer service."
-        redirect_to sign_in_path 
+        session[:user_id] = @user.id
+        flash[:error] = "Your account has been deactived, please contact customer service or subscribe service now."
+        redirect_to plans_path
       end
     else
       flash.now[:info] = "Sign in failed, please check the sign-in information or register a new one."

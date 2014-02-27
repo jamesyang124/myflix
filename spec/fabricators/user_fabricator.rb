@@ -7,6 +7,7 @@ Fabricator(:user) do
   password { pword }
   password_confirmation { pword }
   admin false
+  active true
 end
 
 Fabricator(:admin, from: :user) do 

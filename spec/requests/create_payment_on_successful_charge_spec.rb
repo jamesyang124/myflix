@@ -58,6 +58,8 @@ describe 'Create payment on successful charge' do
   end
 
   it "create a payment with webhook from stripe for charge successed", :vcr do 
+    customer_token = "cus_3Ux1JsdfxOoeWa"
+    user = Fabricate(:user, customer_token: customer_token)
     post '/stripe_events', event_data    
   
     expect(Payment.count).to eq(1)

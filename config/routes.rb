@@ -36,12 +36,18 @@ Myflix::Application.routes.draw do
 
   resources 'invitations', only: [:new, :create]
 
-
   resources 'queue_items', only: [:index, :create, :destroy], path: 'my_queue'
   post 'update_queue', to: 'queue_items#update_queue'
 
+  resources 'plans', only: [:index, :create], path: "billing"
+  #post 'update_plans', to: 'plans#create'
+  delete 'plans', to: 'plans#destroy', path: "billing"
+
   root to: 'pages#front'
   get 'ui(/:action)', controller: 'ui'
+
+  #get 'stripe_events', to: "stripe_events/webhook#index"
+  #post 'stripe_events', to: "stripe_events/webhook#receive"
 
   mount Sidekiq::Web, at: "/sidekiq" unless Rails.env == "production"
   mount StripeEvent::Engine => '/stripe_events'

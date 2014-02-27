@@ -1,5 +1,5 @@
 class UsersController < ApplicationController 
-  before_action :require_user, only: [:show]
+  before_action :require_user, :require_activation, only: [:show]
 
   def new
     @user = User.new

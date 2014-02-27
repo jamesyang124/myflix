@@ -47,12 +47,21 @@ module StripeWrapper
       end
     end
 
+    def self.retrieve(customer_token) 
+      customer = Stripe::Customer.retrieve(customer_token)
+      subscriptions = customer.subscriptions.all
+    end
+
     def successful?
       response.present?
     end
 
     def customer_token
       response.id
+    end
+
+    def subscription_token
+      response["subscriptions"]["data"].last.id
     end
   end
 end

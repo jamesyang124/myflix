@@ -16,6 +16,7 @@ module Myflix
     config.active_support.escape_html_entities_in_json = true
     #config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += %W(#{Rails.root}/lib)
+    #config.force_ssl = true
     config.i18n.enforce_available_locales = true
 
     #config.active_record.whitelist_attributes = false
