@@ -29,3 +29,5 @@
 14. Functionality for inviting friends, has been done by setting up self-referential association.
 
 15. Manage ENV by Figaro gem. `rake figaro:heroku`
+
+16. Set `config.serve_static_assets = true` and `config.assets.compile = true` to allow heroku precompile assets if Nginx or apache do not handle its static files.
