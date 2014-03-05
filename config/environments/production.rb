@@ -19,7 +19,7 @@ Myflix::Application.configure do
   config.assets.compile = false
 
   # Generate digests for assets URLs
-  config.assets.digest = true
+  config.assets.digest = false
 
 
   # Do not eager load code on boot. This avoids loading your whole application
