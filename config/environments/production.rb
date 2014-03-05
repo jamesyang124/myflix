@@ -84,4 +84,6 @@ Myflix::Application.configure do
      :password => ENV["MAILGUN_SMTP_PASSWORD"]
   }
   config.action_mailer.default_url_options = { :host => ENV["MAILER_URL"] }
+
+  config.cache_store = :dalli_store if Rails.env.production?
 end

@@ -19,11 +19,7 @@ module Myflix
     #config.force_ssl = true
     config.i18n.enforce_available_locales = true
     #config.assets.initialize_on_precompile = false if Rails.env.production?
-
-    config.cache_store = :dalli_store if Rails.env.production?
-
-    config.middleware.use Rack::Deflater if Rails.env.production?
-
+    
     #config.active_record.whitelist_attributes = false
     config.assets.enabled = true
     config.assets.version = '1.0'
