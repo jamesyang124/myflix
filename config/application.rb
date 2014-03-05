@@ -22,6 +22,8 @@ module Myflix
 
     config.cache_store = :dalli_store if Rails.env.production?
 
+    config.middleware.use Rack::Deflater if Rails.env.production?
+
     #config.active_record.whitelist_attributes = false
     config.assets.enabled = true
     config.assets.version = '1.0'
