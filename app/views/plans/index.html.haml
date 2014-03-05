@@ -29,7 +29,7 @@ Stripe.setPublishableKey("#{ENV['STRIPE_PUBLISHABLE_KEY']}");
               = submit_tag "Cancel Service", class: "btn"
           - else
             %a.btn(href="#payment-form" id="cancel_subscription")= "Subscribe Myflix"
-            = form_tag plans_path, method: :post, id: "payment-form", class: "well" do 
+            = form_tag plans_path, method: :post, id: "payment-form", class: "well plans" do 
               %fieldset.credit_card
                 %header
                   %h1 Credit Card Information

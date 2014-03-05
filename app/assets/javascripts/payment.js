@@ -1,10 +1,10 @@
 
 $(document).ready(function(){
 // do your checks of the radio buttons here and show/hide what you want to
-  $("#payment-form").hide();
+  $(".plans#payment-form").hide();
 
   $('#cancel_subscription').click(function() {
-    $("#payment-form").show();
+    $(".plans#payment-form").show();
     $('#cancel_subscription').hide();
   });
 
