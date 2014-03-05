@@ -18,7 +18,7 @@ module Myflix
     config.autoload_paths += %W(#{Rails.root}/lib)
     #config.force_ssl = true
     config.i18n.enforce_available_locales = true
-    config.assets.initialize_on_precompile = false if Rails.env.production?
+    #config.assets.initialize_on_precompile = false if Rails.env.production?
 
     config.cache_store = :dalli_store if Rails.env.production?
 

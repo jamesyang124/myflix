@@ -13,7 +13,7 @@ Myflix::Application.configure do
   config.serve_static_assets = true
 
   # Compress JavaScripts and CSS
-  #config.assets.compress = false
+  config.assets.compress = true
 
   config.assets.js_compressor  = :uglifier
   config.assets.css_compressor = :sass
