@@ -20,6 +20,7 @@ gem 'pg'
 gem 'draper'
 gem 'stripe_event'
 
+
 group :assets do
   gem 'sass-rails',   '~> 4.0.0'
   gem 'coffee-rails', '~> 4.0.0'
@@ -59,6 +60,9 @@ end
 
 group :production do
   gem 'rails_12factor'
+  gem 'rack-cache'
+  gem 'dalli'
+  gem "memcachier"
 end
 
 gem 'jquery-rails'
