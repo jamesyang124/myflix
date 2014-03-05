@@ -20,7 +20,7 @@ module Myflix
     config.i18n.enforce_available_locales = true
     #config.assets.initialize_on_precompile = false if Rails.env.production?
 
-    config.cache_store = :dalli_store if Rails.env.production?
+    #config.cache_store = :dalli_store if Rails.env.production?
 
     config.middleware.use Rack::Deflater if Rails.env.production?
 
