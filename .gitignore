@@ -17,6 +17,7 @@
 /coverage
 /dump.rdb
 /spec/cassettes
+/tmp.csv
 
 # Ignore application configuration
 /config/application.yml

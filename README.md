@@ -1,4 +1,5 @@
-== Project specification
+Project specification
+=====================
 
 1.  This pet project build a streaming service website by Ruby on Rails frameork.
 
