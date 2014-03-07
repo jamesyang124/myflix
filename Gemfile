@@ -30,11 +30,10 @@ end
 group :development, :test do
   gem 'pry'
   gem 'pry-nav'
-  gem 'rspec-rails', '~> 2.14.0'
+
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'meta_request'
-  gem 'fabrication'
   
   # for Sidekiq web UI
   gem 'sinatra', require: false
@@ -46,16 +45,19 @@ group :development do
 end
 
 group :test do
-  gem 'shoulda-matchers', '~> 2.4.0'
-  gem 'factory_girl_rails', '~> 4.3.0'
   gem "faker", '~> 1.2.0'
+  gem 'fabrication'
+
+  gem 'rspec-rails'
   gem 'capybara', "~> 2.1.0"
-  gem 'launchy'
   gem 'capybara-email', '~> 2.2.0'
+  gem 'shoulda-matchers', '~> 2.4.0'
+  gem 'launchy'
+  gem 'database_cleaner'
+
   gem 'vcr'
   gem 'webmock', '~> 1.15.2'
   gem 'selenium-webdriver'
-  gem 'database_cleaner'
 end
 
 group :production do
