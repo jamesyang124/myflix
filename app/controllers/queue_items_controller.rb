@@ -7,13 +7,14 @@ class QueueItemsController < ApplicationController
   end
 
   def create 
+    expire_action action: [:index]
     @queue_items = current_user.queue_items
     put_video_to_queue(@queue_items)
-    expire_action action: [:index]
     redirect_to queue_items_path
   end
 
   def update_queue
+    expire_action action: [:index]
     begin
       if params.include? :queue_items
         update_queue_items 
@@ -21,7 +22,6 @@ class QueueItemsController < ApplicationController
         raise ArgumentError
       end
       current_user.normalize_queue_items_position
-      expire_action action: [:index]
     rescue ActiveRecord::RecordInvalid
       flash[:error] = 'Invalid input for the update'
     rescue ArgumentError
@@ -31,8 +31,8 @@ class QueueItemsController < ApplicationController
   end
 
   def destroy
-    destroy_queue_item
     expire_action action: [:index]
+    destroy_queue_item
     redirect_to queue_items_path  
   end
 
