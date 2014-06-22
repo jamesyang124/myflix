@@ -15,11 +15,17 @@ class QueueItemsController < ApplicationController
 
   def update_queue
     begin
-      update_queue_items
+      if params.include? :queue_items
+        update_queue_items 
+      else
+        raise ArgumentError
+      end
       current_user.normalize_queue_items_position
       expire_action action: [:index]
     rescue ActiveRecord::RecordInvalid
-      flash[:error] = 'Invalid input for the update' 
+      flash[:error] = 'Invalid input for the update'
+    rescue ArgumentError
+      flash[:error] = 'No queue items for the update'
     end
     redirect_to queue_items_path
   end
