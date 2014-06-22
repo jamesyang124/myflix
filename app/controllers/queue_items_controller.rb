@@ -1,6 +1,7 @@
 class QueueItemsController < ApplicationController 
   before_action :require_user, :require_activation 
   
+  caches_action :index
   def index
     @queue_items = current_user.queue_items.order("position ASC")
   end
@@ -8,6 +9,7 @@ class QueueItemsController < ApplicationController
   def create 
     @queue_items = current_user.queue_items
     put_video_to_queue(@queue_items)
+    expire_action action: [:index]
     redirect_to queue_items_path
   end
 
@@ -15,6 +17,7 @@ class QueueItemsController < ApplicationController
     begin
       update_queue_items
       current_user.normalize_queue_items_position
+      expire_action action: [:index]
     rescue ActiveRecord::RecordInvalid
       flash[:error] = 'Invalid input for the update' 
     end
@@ -23,6 +26,7 @@ class QueueItemsController < ApplicationController
 
   def destroy
     destroy_queue_item
+    expire_action action: [:index]
     redirect_to queue_items_path  
   end
 
