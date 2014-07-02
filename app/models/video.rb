@@ -23,6 +23,7 @@ class Video < ActiveRecord::Base
               result.add_videos(video)
               result
             end
+    binding.pry
     result.data
   end
 

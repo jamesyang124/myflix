@@ -1,20 +1,17 @@
 class QueueItemsController < ApplicationController 
   before_action :require_user, :require_activation 
   
-  caches_action :index
   def index
     @queue_items = current_user.queue_items.order("position ASC")
   end
 
   def create 
-    expire_action action: [:index]
     @queue_items = current_user.queue_items
     put_video_to_queue(@queue_items)
     redirect_to queue_items_path
   end
 
   def update_queue
-    expire_action action: [:index]
     begin
       if params.include? :queue_items
         update_queue_items 
@@ -31,7 +28,6 @@ class QueueItemsController < ApplicationController
   end
 
   def destroy
-    expire_action action: [:index]
     destroy_queue_item
     redirect_to queue_items_path  
   end
