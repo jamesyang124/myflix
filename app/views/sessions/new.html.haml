@@ -1,0 +1,35 @@
+%section.register.container
+  .row
+    .span10.offset1
+      =form_tag '/sign_in', class: "form-horizontal"  do
+        %header
+          %h1 Sign In
+          %fieldset
+            - group = "control-group"
+            %div(class=group)
+              =label_tag :email, "Email Address", class: "control-label"
+              .controls
+                .input-prepend
+                  %span.add-on
+                    %i.icon-envelope
+                  =text_field_tag :email, params[:email] || '', class: "span3", placeholder: "ex: email@example.com"
+                - if false
+                  %span.help-inline 
+                    =@user.errors.full_messages_for(:email).first
+            - group = "control-group"
+            %div(class=group)
+              =label_tag :password, "Password", class: "control-label"
+              .controls
+                .input-prepend
+                  %span.add-on 
+                    %i.icon-certificate
+                  =password_field_tag :password, params[:password] || '', class: "span3", placeholder: "do not less than 9 characters."
+                - if false
+                  %span.help-inline 
+                    =@user.errors.full_messages_for(:password).first 
+          %fieldset.actions.control-group
+            .controls
+              =submit_tag 'Sign In', class: "btn btn-success"
+              = link_to "Forgot Password?", forgot_password_path
+              = "Or"
+              = link_to "Sign Up?", register_user_path

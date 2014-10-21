@@ -1,0 +1,1 @@
+//= require paymentjs/payment-js

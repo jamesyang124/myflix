@@ -1,0 +1,81 @@
+- content_for :head do
+  = javascript_include_tag 'register'
+
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+<script type="text/javascript">
+Stripe.setPublishableKey("#{ENV['STRIPE_PUBLISHABLE_KEY']}");
+</script>
+
+%section.register.container
+  .row
+    .span10.offset1
+      =simple_payment_form @user do |f|
+        %header
+          %h1 Register
+          = render 'errors', object: @user
+          %fieldset
+            - group = @user.errors.include?(:email) ? "control-group error" : "control-group"
+            %div(class=group)
+              %label.control-label(for="user_email") Email Address
+              .controls
+                .input-prepend
+                  %span.add-on
+                    %i.icon-envelope
+                  =f.input_field :email, class: "span3", placeholder: "ex: email@example.com"
+                - if @user.errors.include?(:email)
+                  %span.help-inline 
+                    =@user.errors.full_messages_for(:email).first
+            - group = @user.errors.include?(:full_name) ? "control-group error" : "control-group"
+            %div(class=group)
+              %label.control-label(for="full_name") Full Name
+              .controls
+                .input-prepend
+                  %span.add-on 
+                    %i.icon-user
+                  =f.input_field :full_name, class: "span3", placeholder: "ex: David Bowie"
+                - if @user.errors.include?(:full_name)
+                  %span.help-inline 
+                    =@user.errors.full_messages_for(:full_name).first
+            - group = @user.errors.include?(:password) ? "control-group error" : "control-group"
+            %div(class=group)
+              %label.control-label(for="user_password") Password
+              .controls
+                .input-prepend
+                  %span.add-on 
+                    %i.icon-certificate
+                  =f.input_field :password, class: "span3", placeholder: "do not less than 9 characters."
+                - if @user.errors.include?(:password)
+                  %span.help-inline 
+                    =@user.errors.full_messages_for(:password).first
+            - group = @user.errors.include?(:password_confirmation) ? "control-group error" : "control-group info"
+            %div(class=group)
+              %label.control-label(for="user_password_confirmation") Confirm Password 
+              .controls
+                .input-prepend
+                  %span.add-on 
+                    %i.icon-ok-sign
+                  =f.input_field :password_confirmation, class: "span3", placeholder: "Enter the password again."
+                - if @user.errors.include?(:password_confirmation)
+                  %span.help-inline 
+                    =@user.errors.full_messages_for(:password_confirmation).first
+            = hidden_field_tag :invitation_token, @invitation_token
+          %fieldset.credit_card
+            %span.payment-errors
+            .control-group
+              %label.control-label(for="credit-card-number") Credit Card Number
+              .controls
+                %input.span3(type="text" data-stripe="number" id="credit-card-number")
+            .control-group
+              %label.control-label(for="security-code") Security Code
+              .controls
+                %input.span3(type="text" data-stripe="cvc" id="security-code")
+            .control-group
+              %label.control-label Expiration
+              .controls
+                = select_month(Date.today, {add_month_numbers: true}, class: 'span2', data: {stripe: "exp-month"})
+                = select_year(Date.today.year, {start_year: Date.today.year, end_year: Date.today.year + 4}, :"data-stripe" => "exp-year", class: 'span1')
+          %fieldset.actions.control-group
+            .controls
+              %input(type="submit" value="Sign Up" class="btn")
+              = link_to "Forgot Password?", forgot_password_path 
