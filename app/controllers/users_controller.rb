@@ -3,10 +3,7 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-#    render 'new'
-#    http cache.
-    expires_in 5.minutes
-    fresh_when(etag: @user, public: true)
+    render 'new'
   end
 
   def create

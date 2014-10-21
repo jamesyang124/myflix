@@ -8,7 +8,12 @@ class VideosController < ApplicationController
 
   def show 
     @video = VideoDecorator.decorate(Video.find params[:id])
-    render 'video_show'
+
+    # http cache.
+    expires_in 5.minutes
+    if stale?(etag: [@video, @video.reviews], public: true)
+      render 'video_show'
+    end
   end
 
   def search
