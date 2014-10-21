@@ -1,6 +1,5 @@
 class Admin::VideosController < AdminsController 
   before_action :require_user
-  #cache_sweeper :videos_sweeper, :only => [:create]
 
   def new
     @video = Video.new

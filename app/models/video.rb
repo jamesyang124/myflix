@@ -1,6 +1,10 @@
 class Video < ActiveRecord::Base 
   has_many :reviews, -> { order("created_at DESC") }
+<<<<<<< HEAD
   belongs_to :category, touch: true
+=======
+  belongs_to :category
+>>>>>>> a199d706ca0519d7b8176676aba8522fb61748aa
   validates_presence_of :title, :description
 
   #delegate :name, to: :category

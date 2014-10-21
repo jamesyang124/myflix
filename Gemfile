@@ -20,8 +20,6 @@ gem 'pg'
 gem 'draper'
 gem 'stripe_event'
 
-# Rails 4 has remove cache gem. add it back
-gem 'rails-observers'
 gem "actionpack-page_caching"
 gem "actionpack-action_caching"
 

@@ -14,7 +14,7 @@ module Myflix
     config.encoding = "utf-8"
     config.filter_parameters += [:password]
     config.active_support.escape_html_entities_in_json = true
- 
+
     config.autoload_paths += %W(#{Rails.root}/lib)
     #config.force_ssl = true
     config.i18n.enforce_available_locales = true
@@ -28,6 +28,5 @@ module Myflix
       g.template_engine :haml
     end
 
-    config.autoload_paths << "#{::Rails.root}/app/controllers/sweepers"
   end
 end
