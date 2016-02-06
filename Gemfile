@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.0.0'
+ruby '2.2.4'
 
 gem 'rails', '4.0.0'
 gem 'haml-rails'
@@ -36,13 +36,13 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'meta_request'
-  
+
   # for Sidekiq web UI
   gem 'sinatra', require: false
   gem 'slim'
 end
 
-group :development do 
+group :development do
   gem 'letter_opener'
 end
 
