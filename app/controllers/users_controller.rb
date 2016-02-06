@@ -1,24 +1,19 @@
-class UsersController < ApplicationController 
+class UsersController < ApplicationController
   before_action :require_user, :require_activation, only: [:show]
 
   def new
     @user = User.new
-    
-    # http cache.
-    expires_in 5.minutes
-    if stale?(etag: @user, public: true)
-      render 'new'
-    end
+    render 'new'
   end
 
   def create
     @user = User.new(create_user)
     result = UserSignup.new(@user).sign_up(params[:stripeToken], params[:invitation_token])
-  
+
     if result.successful?
       flash[:success] = result.status_message
       redirect_to root_path
-    else 
+    else
       flash.now[:error] = result.status_message
       render :new
     end
@@ -34,12 +29,12 @@ class UsersController < ApplicationController
       @user = User.new(email: invitation.recipient_email)
       @invitation_token = invitation.token
       render :new
-    else 
+    else
       redirect_to expired_token_path
     end
-  end 
+  end
 
-  private 
+  private
 
   def create_user
     params.require(:user).permit(:full_name, :password, :email, :password_confirmation)
