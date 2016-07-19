@@ -1,4 +1,4 @@
-class UserSignup 
+class UserSignup
   attr_accessor :user
   attr_reader :status_message
 
@@ -7,7 +7,7 @@ class UserSignup
   end
 
   def sign_up(stripe_token, invitation_token)
-    if @user.valid?  
+    if @user.valid?
       customer = StripeWrapper::Customer.create(
         :card => stripe_token,
         :user => @user
@@ -17,8 +17,8 @@ class UserSignup
         @user.customer_token = customer.customer_token
         @user.save
         handle_invitation(@user, invitation_token)
-        AppMailersWorker.delay.perform_async(@user.id, @user.class.to_s, :send_welcome_email)
-        
+        AppMailersWorker.perform_async(@user.id, @user.class.to_s, :send_welcome_email)
+
         @status = :success
         @status_message = "Thank you for your payment for Myflix."
       else
@@ -42,7 +42,7 @@ class UserSignup
       if customer.successful?
         @user.update_column(:customer_token, customer.customer_token)
 
-        AppMailersWorker.delay.perform_async(@user.id, @user.class.to_s, :send_welcome_email)
+        AppMailersWorker.perform_async(@user.id, @user.class.to_s, :send_welcome_email)
         @status = :success
         @status_message = "Thank you for your payment for Myflix."
       else

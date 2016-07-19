@@ -16,10 +16,10 @@ module Myflix
     config.active_support.escape_html_entities_in_json = true
 
     config.autoload_paths += %W(#{Rails.root}/lib)
-    #config.force_ssl = true
+    config.force_ssl = false
     config.i18n.enforce_available_locales = true
     #config.assets.initialize_on_precompile = false if Rails.env.production?
-    
+
     #config.active_record.whitelist_attributes = false
     config.assets.enabled = true
     config.assets.version = '1.0'
