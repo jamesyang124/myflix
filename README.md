@@ -3,12 +3,12 @@ Project specification
 
 To launch server:
 
-```sh
-# launch postgres
+  ```sh
+  # launch postgres
 
-redis-server
-sidekiq
-```
+  redis-server
+  sidekiq
+  ```
 
 1.  This pet project build a streaming service website by Ruby on Rails frameork.
 
@@ -16,22 +16,22 @@ sidekiq
 
 3.  Database is created by PostgreSql 9.3.1.
 
-```sh
-pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
-pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop
+  ```sh
+  pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
+  pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop
 
-# If missing folder due to OsX el Captain removed it.
-mkdir /usr/local/var/postgres/{pg_tblspc,pg_twophase,pg_stat,pg_stat_tmp,pg_replslot,pg_snapshots}/
+  # If missing folder due to OsX el Captain removed it.
+  mkdir   /usr/local/var/postgres/{pg_tblspc,pg_twophase,pg_stat,pg_stat_tmp,pg_replslot,pg_snapshots}/
 
 
-brew services start homebrew/versions/postgresql93
-brew services stop homebrew/versions/postgresql93
+  brew services start homebrew/versions/postgresql93
+  brew services stop homebrew/versions/postgresql93
 
-# psql -l
-# psql database_name:
-# list all tables
-\dt
-```
+  # psql -l
+  # psql database_name:
+  # list all tables
+  \dt
+  ```
 
 4.  The image files have been uploaded to Amazon S3 service.
 
@@ -47,9 +47,9 @@ brew services stop homebrew/versions/postgresql93
 
 10. Mail service move to Sidekiq gem, which is a background job handler backed by Redis server.
 
-Heroku Deployment:
+  Heroku Deployment:
 
-https://github.com/mperham/sidekiq/wiki/Deployment
+  https://github.com/mperham/sidekiq/wiki/Deployment
 
 11. Support file uploading by CarrierWave gem, should give it a go for Dragonfly gem in future.
 
