@@ -47,6 +47,10 @@ brew services stop homebrew/versions/postgresql93
 
 10. Mail service move to Sidekiq gem, which is a background job handler backed by Redis server.
 
+Heroku Deployment:
+
+https://github.com/mperham/sidekiq/wiki/Deployment
+
 11. Support file uploading by CarrierWave gem, should give it a go for Dragonfly gem in future.
 
 12. View template is scripted by Haml, pick simple_form_for and bootstrap_form_for to customized form.
